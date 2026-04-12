@@ -3,3 +3,7 @@ the command i finally used was ssh -p 2220 bandit0@bandit.labs.overthewire.org
 the password i found is ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
 
 Level 1 : I read the file using its complete url. with command cat. the password is 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+Level 2 : I cat the file to console. used double quotes to write the filename. 
+knew this already for some reason. 
+password found is MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
