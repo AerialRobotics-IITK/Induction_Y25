@@ -14,3 +14,9 @@ password found is 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
 
 Level 4 : just cat all the files one by one
 password found is 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+apparently better strategy is to use the file command.
+file <filename>
+gives the type of the file
+
+another command i learnt is du
+it gives disk usage statistics
