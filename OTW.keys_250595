@@ -1,0 +1,32 @@
+1 - ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+using cat 
+2 - 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+cat < -
+3 - MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+using "" in cat
+4 - 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+ls -A
+5 - 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+file ./*
+6 - HWasnPhtq9AVKe0dmk45nxy20cvUa6
+using specific option in find command
+7 - morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+using  user , group , size command
+8 - dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+using grep
+9 - 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+using uniq and count option to see 1 time occured word
+10 - FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+use strings and pass that data to grep using piping 
+11 - dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+use base64
+12 - 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+use tr to use the rot13 function again on the text to give back the original text and cat to output the text
+13 - FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+following the level instructions then using the decompressing the file and renaming untill we can read it using cat
+14 - MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+copying private ssh key into the local file and ssh -i to login
+15 - 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo 
+using nc command 
+15 - 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo 
+using nc command 
