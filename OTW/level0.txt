@@ -1,0 +1,1 @@
+I mean this was pretty easy, after figuring out how you're supposed to log into an IP using ssh, it was trivial from there using cat.
