@@ -1,0 +1,84 @@
+Level 0 : I googled how to add port and url to ssh.
+the command i finally used was ssh -p 2220 bandit0@bandit.labs.overthewire.org
+the password i found is ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+Level 1 : I read the file using its complete url. with command cat. the password is 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+Level 2 : I cat the file to console. used double quotes to write the filename. 
+knew this already for some reason. 
+password found is MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+
+Level 3 : CD to inhere directory. then list all with the option -a.
+again, knew this for some reason
+password found is 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+
+Level 4 : just cat all the files one by one
+password found is 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+apparently better strategy is to use the file command.
+file <filename>
+gives the type of the file
+
+another command i learnt is du
+it gives disk usage statistics
+
+Level 5 : 
+i know i have to use du command
+so i first did man du
+i realised the command should be du * -a --bytes
+this logs all files with their byte sizes
+then all i do is look manually for the file of size 1033
+go to the file and cat it
+password found is HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+apparently the find command can do this even better. just do find -size 1033c, where c means bytes (characters actually). find has many other paramters too
+
+Level 6:
+again saw man find
+found user tag and group tag. many permission denied error. manually search for accessible file
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+Level 7:
+see man grep to see its usage
+dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+Level 8:
+see man for uniq, sort and grep
+the following command gives the password directly
+sort data.txt | uniq -c | grep -e "1 "
+    idea is to sort the lines first, so duplicate lines become adjacent. 
+    this is required because uniq requires duplicate lines to be adjacent only. 
+    now send this sorte output to uniq. 
+    uniq will print all unique lines.
+    we dont want that. so we use -c option to precede every line by its count
+    then grep "1 " from the output
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+Level 9:
+see man for strings.
+strings command looks for ascii text in a binary file and returns all such lines to console
+grep this for the many equals too signs
+FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+Level 10:
+see man for base64
+use the -d option to decode
+dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+Level 11:
+see man for tr (translate)
+command is tr "a-m n-z A-M N-Z" "n-z a-m N-Z A-M" < data.txt
+7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+Level 12:
+had to use ai for first time. the language is wierd
+they say a hex dum of a file that has been compressed many times
+i was trying to decompress data.txt for very long time
+with the intention that ill unhexdump at the end
+apparently i had to unhexdump first
+then decompress lots of time using gzip, bzip2 and tar
+FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+
+
+
+
+MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
