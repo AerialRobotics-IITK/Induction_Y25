@@ -1,0 +1,205 @@
+Firstly, for starting the level 0 command:ssh bandit0@bandit.labs.overthewire.org -p 2220
+To solve Level 0
+=>password is stored in readme.md
+=>type ls which list down the every file present in the folder 
+=>then using cat commond which is used to read or merge that file 
+password0:ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+To solve Level 1
+=>pssword is in - so to read it use cat ./- command 
+=>because . tells that it is current folder / like we write in paths 
+=>password:263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+To solve Level 2
+=> the file name in HD is --spaces in this filename-- when there is spaces in the filename then use double quotes cat"spaces in the filename"
+=>there is symbol too so from level 1 cat "./--spaces in this filename--"
+=>password:MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+
+To solve level 3
+=>there is a folder called inhere ....use cd inhere to change the directory
+=>now it has a hidden file so ls would not work so using command ls -a which shows all hidden files
+=>final command cat ./...Hiding-From-You
+=>passowrd:2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+
+To solve level 4
+=> very easy problem same process as above i just read each file one by one and got the readable password in file07
+=>password:4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+
+To solve level 5
+=>There are many files so not possible to do individually so used the file command
+=> file . -readable -size 1033c ! -executable
+=>gave the file2 in maybehere07 directory file2 but main  the text in that was of around 1000 word so used different find way
+=> used the command find . -readable -size 1033c ! -executable -exec cat {} + | xargs which gave me the correct string the 1000 one was garbage 
+=>password:HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+To solve level 6:
+=>now there are many file so using find / -user bandit7 -group bandit6 -size33c 2>/dev/null
+=>2>/dev/null remove those files which are of no use permission denied in null and password is in bandit7.passowrd
+password:morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+To solve level 7:
+=>direct use of grep command that is used to search a particular  data inside a file as its too large for cat
+=>password:dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+To solve level 8:
+=>to find the exact one the unique use -u command sort data.txt | unique -u
+=>password:4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+to solve level 9:
+=>just using command strings data.txt to read the string
+=>password:FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+To solve level 10:
+=>using base64 which decode binary to string  and command is base64 -d data.txt -d is for decode
+=>password:dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+To solve level 11:
+=>using the translate tr command  cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m' and | this is used for kind of the output from left side and apply the command futher from right
+=>password:7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+To solve level 12:
+=>The level is basically about decompressing the file and checking the file type and decompress it again until and unless we get a readable ASCII file 
+=>there are three types gzip,bzip2 and tar . basically tar is mutiple file bundle into one
+=> for gzip and bzip2 we have to move the data file once to its extension type .gz or .bz2  so to easilly decompress 
+=> mv data data.gz  then gunzip data.gz to decompress 
+=> for tar it is tar -xf data.bin to knwo the file in it and file command at each step step to check file type and use the command accoridngly
+=>password:FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+
+
+to sovle level 13:
+=>ssh -i key user@host -p port	 tSSH using  aprivate key instead of password
+=>scp -P port user@host:remotefile localfile   for Securely copy a file from remote to local
+=>chmod 400 file : Set key permissions (SSH requires this — too open = rejected)
+=> then read the file cat /etc/bandit_pass/bandit14	
+=>password:MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+
+to sovle level 14:
+=>using nc command to connect or receive the data from a particular port and nc localhost(telling the host connecting) port 30000 the port name
+=>password:8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+
+
+to solve level 15:
+=>same as the previous level only difference is ssl security so we cant directly use nc so using the openssl s_client -connect localhost 30001
+=>password:kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+
+to solve level 16
+=>using nmap to port scan ...nmap -p 31000-32000 localhost  -p to check all ports in that range and -A for aggressive check and -f for fast check (like first 100 ports ) and -sV service check
+=>found port 31790 running SSL so used openssl s_client -connect bandit.labs.overthewire.org:31790 -quiet and submitted bandit16 password
+=>instead of a text password it returned a RSA private key which is the credential for bandit17
+=>saved the RSA key to /tmp/bandit17_key on the bandit server (home dir is read-only so /tmp is used)
+=>NOTE: cannot SSH from inside the bandit server (localhost connections are blocked) must connect from local machine
+=>password :x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+
+to solve level 17
+=>two files are present passwords.old and passwords.new each having many passwords
+=>used diff command to find the line that changed: diff /home/bandit17/passwords.old /home/bandit17/passwords.new
+=>the line marked with > (right side/new file) is the bandit18 password
+=>diff is a command that compares two files line by line and shows what was added(>) removed(<) or changed
+
+to solve level 18
+=>when logging into bandit18 it immediately disconnects saying "Byebye!" and closes the connection
+=>reason: the .bashrc file has been modified to run logout command automatically on every login
+=>.bashrc is a script that runs every time a new bash shell/session starts
+=>command: ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
+=>password:cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+
+to solve level 19
+=>a setuid binary called bandit20-do is present in the home directory
+=>setuid means the binary runs with the permissions of its owner (bandit20) instead of the current user (bandit19)
+=>command: ./bandit20-do cat /etc/bandit_pass/bandit20
+=>password:0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+
+to solve level 20
+=>a setuid binary called suconnect is present in the home directory
+=>suconnect connects to a given port on localhost, reads a password, verifies it matches bandit20's password, then sends back bandit21 password
+=>Terminal 1: set up a nc listener that sends bandit20 password: echo "0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO"|nc-l-p1234
+=>Terminal 2: run the binary to connect to the listener: ./suconnect 1234
+=>bandit21 password appears in Terminal 1 after suconnect 
+=>password:EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+
+to solve level 21
+=>cron is a job scheduler in linux that runs scripts/commands automatically 
+=>checked /etc/cron.d/ directory using ls /etc/cron.d/ to find scheduled jobs
+=>found cronjob_bandit22, read it using cat /etc/cron.d/cronjob_bandit22
+=>script copies bandit22 password to a file in /tmp with a specific filename
+=>read that file using cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+=>password:tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+
+to solve level 22
+=>same cron approach as level 21 but the script generates a dynamic filename using md5sum
+=>read the script: cat /usr/bin/cronjob_bandit23.sh
+=>ran that same command ourselves to get the filename
+=>cut -d' '-f 1 means split by space delimiter and take the first field (the hash)
+=>read the file: cat /tmp/<md5hash output>
+=>password:0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+
+to solve level 23
+=>cron runs all scripts placed in /var/spool/bandit24/foo/ as bandit24 then deletes them
+=>created a temp folder: mkdir /tmp/myfolder && chmod 777 /tmp/myfolder
+=>wrote a custom script in /var/spool/bandit24/foo/myscript.sh:
+  #!/bin/bash
+  cat /etc/bandit_pass/bandit24 > /tmp/myfolder/password.txt
+=>made it executable: chmod 777 /var/spool/bandit24/foo/myscript.sh
+=>cron ran the script which copied bandit24 password into /tmp/myfolder/password.txt
+=>read the password: cat /tmp/myfolder/password.txt
+=>password:gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+
+to solve level 24
+=>need to brute force all 10000 combinations from 0000 to 9999
+=>created a script in /tmp/brute/brute.sh:
+  #!/bin/bash
+  for i in $(seq -w 0000 9999); do
+      echo "gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 $i"
+  done | nc localhost 30002
+=>seq -w generates numbers with leading zeros(0000,0001..9999)
+=>piped all combinations at once into nc localhost 30002 for efficiency
+=>password:iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+
+to solve level 25
+=>logged into bandit25 and found bandit26.sshkey in home directory
+=>checked /etc/passwd to find bandit26 uses a custom shell /usr/bin/showtext instead of /bin/bash
+=>more paused due to small terminal — pressed v to open vim
+=>this spawned a bash shell as bandit26 bypassing the custom shell restriction
+=>read password: cat /etc/bandit_pass/bandit26
+=>password:s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+
+to solve level 26
+=>found bandit27-do setuid binary in home directory (same concept as level 19)
+=>setuid binary runs as bandit27 so it can read bandit27's password file
+=>command: ./bandit27-do cat /etc/bandit_pass/bandit27
+=>password:upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+
+to solve level 27
+=>a git repo exists at ssh://bandit27-git@localhost/home/bandit27-git/repo
+=>git clone from inside the bandit server fails because SSH password auth from localhost is blocked
+=>direct file access to /home/bandit27-git/ is also permission denied
+=>bandit27-git user shares the same password as bandit27
+=>command on local machine: git clone ssh://bandit27-git@bandit.labs.overthewire.org:2220/home/bandit27-git/repo ~/repo27
+=>password:Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+
+to solve level 28
+=>cloned repo from local machine: git clone ssh://bandit28-git@bandit.labs.overthewire.org:2220/home/bandit28-git/repo ~/repo28
+=>README.md had the password field redacted/hidden
+=>used git log to see all commits — found 3 commits: "fix info leak", "add missing data", "initial commit"
+=>the "add missing data" commit contained the password before it was redacted
+=>password:4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+
+to solve level 29
+=>cloned repo from local machine: git clone ssh://bandit29-git@bandit.labs.overthewire.org:2220/home/bandit29-git/repo ~/repo29
+=>README.md had password hidden on master branch
+=>used git branch -a to list all branches including remote ones
+=>found branches: master, dev, sploits-dev
+=>switched to dev branch: git checkout dev
+=>README.md on dev branch contained the actual password
+=>password:qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+
+to solve level 30
+=>cloned repo from local machine: git clone ssh://bandit30-git@bandit.labs.overthewire.org:2220/home/bandit30-git/repo ~/repo30
+=>README.md said "just an empty file... muahaha"
+=>git log and git branch showed nothing useful
+=>used git tag to list tags — found a tag called "secret"
+=>used git show secret to view the tag contents revealed the password directly
+=>password:fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+
+
+
