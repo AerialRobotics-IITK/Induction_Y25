@@ -2,20 +2,24 @@ Level 0
 using the format of ssh to login into the game in windows terminal as
 ssh username@host -p port
 writing the given password – bandit0
+
 level 0 -> 1
 code for finding the password
 ls                   (list of all the files in home directory)
 cat readme          (reading the file - readme)
 password - ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
 then use the same procedure as level 0
+
 level 1 -> 2
 file name = -
 pass - 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
 here using command for – named file is as follows cat ./-
+
 level 2 -> 3
 file name =  --spaces in this filename--
 pass - MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
 here using command for – named file is as follows cat  --“—spaces in  this filename—”
+
 level 3 -> 4
 pass - 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
 Commands
@@ -24,22 +28,26 @@ cd inhere
 find
 cat .
 cat ./...Hiding-From-You
+
 level 4 -> 5
 pass - 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
 Commands
 cd inhere
 file ./-* 
 cat ./-file07
+
 level 5 -> 6
 pass - HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
 Commands
 find . -type f -size 1033c ! -executable
 cat ./inhere/maybehere07/.file2
+
 level 6 -> 7
 pass - morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
 Commands
 find / -type f -user bandit7 -group bandit6 -size 33c 
 cat /var/lib/dpkg/info/bandit7.password
+
 level 7 -> 8
 pass - dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
 Commands
@@ -47,26 +55,31 @@ ls -alps
 ls data.txt
 strings data.txt
 strings data.txt | grep “millionth”
+
 level 8 -> 9
 pass - 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
 Commands
 cat data.txt
 sort data.txt | uniq -c
+
 level 9 -> 10
 pass - FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
 Commands
 Strings data.txt | grep “=”
+
 level 10 -> 11
 pass - dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
 Commands
 cat data.txt
 base64 -d data.txt
+
 level 11 -> 12
 pass - 7x16WNeHIi5YkIhWsfFIqoognUTyd4
 Commands
 cat data.txt
 echo "7k16JArUVv5LxVuJfsSVdbbtaHGlw9D4" | tr 'A-Za-z' 'N
 -ZA-Mn-za-m'
+
 level 12 -> 13
 pass - FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
 Commands
@@ -118,25 +131,27 @@ gzip -d data.gz
 ls
 file data     
 cat data
+
 Level 13->14
 Pass - MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 Ls
 scp -P 2220 bandit13@bandit.labs.overthewire.org:~/sshkey.private . 
 ssh -i sshkey.private -p 2220 bandit14@bandit.labs.overthewire.org
 cat /etc/bandit_pass/bandit14
+
 Level 14->15
 Pass - MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
 Ls
 scp -P 2220 bandit13@bandit.labs.overthewire.org:~/sshkey.private . 
 ssh -i sshkey.private -p 2220 bandit14@bandit.labs.overthewire.org
 cat /etc/bandit_pass/bandit14
-level 14-> 15
+level 15-> 16
 pass - 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
 nc localhost 30000
-level 15->16
+level 16->17
 pass - kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
 ncat –ssl localhost 30001
-level 16->17	
+level 17->18	
 -----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
 imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
@@ -166,18 +181,18 @@ vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
 -----END RSA PRIVATE KEY-----
 nmap localhost -p 31000-32000
 apply ncat –ssl localhost for the provided files
-level 17->18
+level 18->19
 pass - x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO (diff passwords.old passwords.new)
-Level 18->19: cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8 (passed "cat readme" along with the ssh command only to tunnel through the .bashrc logout)
+Level 19->20: cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8 (passed "cat readme" along with the ssh command only to tunnel through the .bashrc logout)
 
-qLevel 19->20: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO (This was really crazy! bash: ./bandit20-do cat /etc/bandit_pass/bandit20)
+qLevel 20->21: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO (This was really crazy! bash: ./bandit20-do cat /etc/bandit_pass/bandit20)
           This bandit20-do file had UID for the user bandit20 which works like a uniform that allows to access things that are permitted to bandit20
           
-Level 20->21: EeoULMCra2q0dSkYj561DX7s1CpBuOBt (sent data to a random port via nc; bash: echo "0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO" | nc -lp 1234 &)
+Level 21->22: EeoULMCra2q0dSkYj561DX7s1CpBuOBt (sent data to a random port via nc; bash: echo "0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO" | nc -lp 1234 &)
           -l -> listen (wait); -p -> (specifying port); & -> sends it to background
           then ./suconnect 1234 --> this connects to the same port gets the password sent through the port via echo, verifies it and returns the next password to the terminal
           
-Level 21->22: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q (cron is like a butler who autommates the stuff and doesn't do anything until specified)
+Level 22->23: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q (cron is like a butler who autommates the stuff and doesn't do anything until specified)
           ls /etc/cron.d/ -> checked the present files
           cat /etc/cron.d/cronjob_bandit22
           @reboot bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
@@ -189,23 +204,23 @@ Level 21->22: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q (cron is like a butler who automm
           cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv (This /tmp/.... is the file where the cron is storing the password to)
           finally: cat t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
     
-Level 22-> 23: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga (with basic above steps only:)
+Level 23-> 24: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga (with basic above steps only:)
           Got $mytarget = echo I am user $myname | md5sum | cut -d ' ' -f 1 ($myname is a placeholder)
           Hash returned
           cat hash
           
-Level 23->24: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 (Ran a shellscript file that transferred the cronjob_bandit24 tasks to our own txt file)
+Level 24->25: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 (Ran a shellscript file that transferred the cronjob_bandit24 tasks to our own txt file)
 
-Level 24->25: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4 (Created own scrip file in which looping was done to try every single permutation while being connected)
+Level 25->26: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4 (Created own scrip file in which looping was done to try every single permutation while being connected)
 
-Level 25->26: *check bandit26key.txt (has the ssh key) -> explored a whole new weird method: shrunk down the terminal and entered
+Level 26->27: *check bandit26key.txt (has the ssh key) -> explored a whole new weird method: shrunk down the terminal and entered
           :set shell= /bin/bash
           :shell
           and on maximising i got into bandit26
 
-Level 26->27: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB (Nothing new, a previous tactic only)
+Level 27->28: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB (Nothing new, a previous tactic only)
 
-Level 27->28: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN (git cloning to the local machine)
+Level 28->29: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN (git cloning to the local machine)
 
 Level 28->29: 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7 (git log history) using git log -p
 Level 29->30: 
