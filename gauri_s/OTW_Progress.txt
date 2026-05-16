@@ -1,0 +1,139 @@
+HINTS-
+
+Use man <command> on terminal to learn description
+
+
+Level 0
+command is: ssh <username>@<website_name> -p 2220
+
+then password is asked: bandit0
+
+In some time it will get closed automatically and we have to login again.
+
+If you mess up at any point (like forget to add the username bandit0, and just used ssh bandit.lab.overthewire.org -p2220) then type: exit
+
+
+Level 1
+command is: ls
+
+command is: cat readme
+
+we get password: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+ls is used to list directory content. More info here: https://manpages.ubuntu.com/manpages/noble/man1/ls.1.html
+
+More info here: https://www.geeksforgeeks.org/linux-unix/ls-command-in-linux/
+
+ls -1 is used to list the detailed information about the files and directories in the current folder.
+
+cat command is used to view files
+(https://www.cyberciti.biz/faq/linux-unix-appleosx-bsd-cat-command-examples/)
+
+
+In the Linux command line, Ctrl+C sends a SIGINT (Signal Interrupt) to the currently running foreground process, instructing it to stop and exit immediately. This acts as a "cancel" or "stop" button, interrupting operations like infinite loops or long-running commands (e.g., ping) and returning control to the shell prompt. Unlike in graphical user interfaces where Ctrl+C is used for copying text, to copy text from a Linux terminal, users must use Ctrl+Shift+C instead
+
+
+
+level 2:
+filename is dashed (sources: https://medium.com/@.Qubit/how-to-create-open-find-remove-dashed-filename-in-linux-27ee297d1740)
+
+ls doesn't mention '-' as any file
+find - also doesn't help
+
+ls-a to view hidden files... doesn't really show - as a file
+The usual syntax from cat will not work as cat would consider (-) as an STDIN and wait for user INPUT on the screen. The proper way to view content of dashed filename would be again to prefix the path of the file
+The proper way to view content of dashed filename would be again to prefix the path of the file
+
+file <filename> is used to view what the type of a file. It identifies file types by examining their content rather than their file extensions, making it an indispensable tool for users who work with various file formats.
+
+FROM START
+bandit0@----
+
+ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+Then we have to type exit and again ssh -p 2220 bandit1@bandit.labs.overthewire.org
+
+bandit1@-----
+Command is 
+ls
+cat ./-
+Password is
+263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+
+
+bandit2@-----
+After multiple tries, this is correct:
+ 
+MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+
+
+bandit3@---
+
+ls
+cd inhere
+ls -a
+cat ./...Hiding-From-You
+
+
+2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+
+
+Bandit 04
+New command: file <name of file>* to know file type  
+4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+
+Bandit 5@....
+Ok this level brought me sweats
+
+New command learned- find 
+ 
+
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+
+Bandit 6 was sweaty too cuz I forgot / after command find
+Password ka path is:
+/var/lib/dpkg/info/bandit7.password
+Password is
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+ 
+
+bandit7@-----
+
+The password for the next level is stored in the file data.txt next to the word millionth
+
+ 
+(i just wrote cat readme.txt and it all bombarded on my terminal)
+
+Pass: 
+dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+
+bandit8@----
+ls 
+data.txt
+Now to find unique wala, we do sorting and then uniq
+Password 
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+bandit9@----
+ 
+FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+Bandit10@---
+
+The password for the next level is stored in the file data.txt, which contains base64 encoded data
+ 
+dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+
+bandit11@----
+
+The password for the next level is stored in the file data.txt, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
+
+Command:
+tr to translate characters
+ 
+
+7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+bandit12@-----
+

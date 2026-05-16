@@ -1,0 +1,20 @@
+level0
+I first opened terminal in linux and pasted url 
+ssh bandit0@bandit.labs.overthewire.org -p 2220
+then it asked for authenticity, I typed yes and clicked enter
+then it asked for password
+I typed the password bandit0
+then I typed cat readme 
+the password was ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+level0 to level1
+then I typed exit
+and this time typed
+ssh bandit1@bandit.labs.overthewire.org -p 2220
+then password that I got
+then I typed cat ./- for specific address
+then password for level 2 was 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+then exited
+this time ssh bandit2@bandit.labs.overthewire.org -p 2220
+password that i GOT
+
+

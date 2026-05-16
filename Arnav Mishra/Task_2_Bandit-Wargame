@@ -1,0 +1,26 @@
+0. ran ssh command with bandit.overthewire.org, and use cat on readme to get password ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+
+1. use cat ./- to open the - folder to get 263JGJPfgU6LtdEvgfWU1XP5yac29mFx, as only cat - would wait for input from keyboard
+
+2. MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx, similar as before
+
+3.2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ, use ls -a to find all hidden files.
+
+4.4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw, use find ./* to check all the files and then cat./-file07
+
+5.HWasnPhtq9AVKe0dmk45nxy20cvUa6EG, use find . -type f -size 1033c ! -executable, then cd maybehere07/ cat ./.file2
+
+6. morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+7.dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
+8.4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+
+9.FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+
+10.dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr, base64 -d data.txt
+
+11.7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+
+
+

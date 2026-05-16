@@ -1,0 +1,112 @@
+ssh bandit0@bandit.labs.overthewire.org -p 2220
+Level 0: bandit0
+0 to 1: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If: 
+I opened a file called readme using nano readme
+1 to 2: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+I opened a dash file using function nano ./<file name>
+2 to 3: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+I opened a file with dash and spaces in name (--spaces in this filename--) using function nano ./--spaces\ in\ this\ filename--
+3 to 4: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+I opened a hidden file using nano -a ls, this function shows all files including hidden files.
+4 to 5: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+I had to find which file is human readable, this was done using function file <filename> which shows type in the given file
+5 to 6: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+I used the find command to search for the required file type. This is my command in terminal:
+find . -type f -size 1033c ! -executable -exec file {} \; 
+6 to 7: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+I used find function again to find a file with given user and group
+find / -type f -user bandit7 -group bandit6 -size 33c 2>/dev/null
+7 to 8: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+I used function grep used to find the word next to given word. 
+grep millionth data.txt
+8 to 9: 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+I used uniq function after sorting the file, data.txt. Here is my command
+Sort data.txt | uniq -u
+9 to 10: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+I had to first access all the text that is human readable files for which I used strings function. And then to search for the texts next to “=”, grep function is used. Final code:
+FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+10 to 11: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+Base64 is used to encode and decode data from the text file. So I gave command base64 -d data.txt to decode data and print it on terminal
+11 to 12: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+In this part, all characters of the password in text file are shifted to the right by 13 digits meaning N is written as A, O is written as B. To translate the alphabets, we use command tr. here is my final code:
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+12 to 13: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+The given file in this level is compressed multiple times(6) and we need to decompress and extract it. For that we first copy this file to another directory, which we created. I did this using the following code:
+Mktemp -d :  showed the directory path and I opened it using cd
+cp ~/data.txt . : copied data to this directory 
+xxd -r data.txt > file : extracted it and renamed it to file
+Then I checked the file type of ‘file’ using : file file
+If it is gzip then I ran-
+mv file file.gz
+gunzip file.gz
+If it is bzip then I ran;
+mv file file.bz2
+bunzip2 file.bz2
+If it is tar archive then:
+mv data7.bin data7.tar
+tar -xf data7.tar
+ls
+If it is POSIX tar type then, we have follow steps:
+First, rename it to .tar: mv data6 data6.tar
+Then extract it : tar -xf data6.tar
+See new file name using ; ls
+Check file type again and run with conditions above.
+
+File name can change after some operations, so I used ls to see filename each time. 
+Once file type is ascii text then I printed it using cat
+
+13 to 14: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+The password for this level was inside bandit14. To login into bandit14 I had to use a private ssh from bandit 13 and then login inside bandit 14. For that I had to first change permissions using chmod: chmod 600 sshkey.private
+Then I logged in using private ssh:
+ ssh -i sshkey.private bandit14@bandit.labs.overthewire.org -p 2220
+Once I was in, I used cat to extract the password for that level.
+
+14 to 15: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo
+This password was found by opening localhost 30000 and submitting previous password there.
+nc localhost 30000
+<prev password>
+15 to 16: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+Submitted password to required ssl
+16 to 17: 
+First we have to find open ports: nmap -p 31000-32000 local host. This will give a list of openports
+31046/tcp open  echo
+31518/tcp open  ssl/echo
+31691/tcp open  echo
+31790/tcp open  ssl/unknown
+31960/tcp open  echo
+Then I tried both the ssl/unknown ports and submitted password there using:
+openssl s_client -connect localhost:31790
+I found a big SSH key which I saved to my local home directory as key.
+Then I logged into bandit 17 using that key:
+ssh -i key bandit17@localhost -p 2220
+17 to 18: x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+I used command: diff passwords.old passwords.new
+To find changes in new file compared to the old file. 
+18 to 19:cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+When I login to 19th level, I logout automatically due to .bashrc. Soo I opened the file in readme mode and then entered my password to get the new password
+19 to 20: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+I opened this file as -do since normally opening it, I don’t get the access
+I used the command: ./bandit20-do cat /etc/bandit_pass/bandit20
+20 to 21: EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+So, we have to connect two terminals in bandit20 server. For that I first established terminalA using nc -l 1024. Then I established terminal B using: ./suconnect 1024 in a different terminal of same server. I then sent previous password from terminal A, and I got next password as output.
+21 to 22: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+
+22 to 23: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga
+
+23 to 24: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+
+24 to 25: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+
+25 to 26: s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ
+
+26 to 27: upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+
+27 to 28: Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+
+28 to 29: 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7
+
+29 to 30: qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+
+30 to 31: fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy
+
+
