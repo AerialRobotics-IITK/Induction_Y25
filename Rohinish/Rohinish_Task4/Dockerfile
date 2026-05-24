@@ -10,10 +10,6 @@ RUN make clean && make
 
 FROM debian:bookworm-slim AS runtime
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libstdc++6 \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV LANG=C.UTF-8
 WORKDIR /app
 
