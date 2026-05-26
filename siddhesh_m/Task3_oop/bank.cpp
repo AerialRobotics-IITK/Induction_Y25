@@ -326,3 +326,62 @@ class EmailNotification: public Notification {
             cout << message << endl;
         }
 };
+
+int main() {
+
+    Customer* cust1 = new Customer();
+    cust1->customerId = 1001;
+    cust1->fullName = "abc";
+    cust1->aadhaarNumber = "1234567890";
+    cust1->cibilScore = 750; 
+
+    SavingsAccount* savings = new SavingsAccount();
+    savings->accountNumber = 987654321;
+    savings->balance = 5000.0;
+    savings->minimumBalance = 1000.0;
+    savings->interestRate = 4.0;
+    savings->customer = cust1;
+    
+    cust1->accounts.push_back(savings);
+
+    savings->showDetails();
+
+    Transaction* t1 = new Transaction();
+    t1->transactionId = 1;
+    t1->transactionType = "Deposit";
+    t1->amount = 2000.0;
+    t1->receiverAccount = savings;
+    
+    if(t1->executeTransaction()) {
+        savings->showDetails();
+    }
+
+    Transaction* t2 = new Transaction();
+    t2->transactionId = 2;
+    t2->transactionType = "Withdraw";
+    t2->amount = 10000.0;
+    t2->senderAccount = savings;
+    
+    t2->executeTransaction();
+
+    Loan* autoLoan = new Loan();
+    autoLoan->loanId = 55;
+    autoLoan->loanAmount = 150000.0;
+    autoLoan->interestRate = 9.5;
+    autoLoan->tenureMonths = 36;
+    autoLoan->customer = cust1;
+
+    try {
+        autoLoan->apply();
+    } catch (exception& e) {
+        cout << e.what() << endl;
+    }
+
+    delete cust1;
+    delete savings;
+    delete t1;
+    delete t2;
+    delete autoLoan;
+
+    return 0;
+}
