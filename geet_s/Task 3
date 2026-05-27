@@ -1,0 +1,191 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Branch {
+private:
+    int branchId;
+    string branchName;
+    string IFSCCode;
+
+public:
+    Branch(int id,string name,string ifsc) {
+
+        branchId = id;
+        branchName = name;
+        IFSCCode = ifsc;
+    }
+
+    void displayBranch() {
+
+        cout << "\n===== BRANCH =====\n";
+
+        cout << "Branch ID : " << branchId << endl;
+        cout << "Branch Name: " << branchName << endl;
+        cout << "IFSC Code : " << IFSCCode << endl;
+    }
+};
+
+class Bank {
+private:
+    int bankId;
+    string bankName;
+
+public:
+    Bank(int id,string name) {
+
+        bankId = id;
+        bankName = name;
+    }
+
+    void displayBank() {
+
+        cout << "\n===== BANK =====\n";
+
+        cout << "Bank ID   : " << bankId << endl;
+        cout << "Bank Name : " << bankName << endl;
+    }
+};
+
+
+class Account {
+protected:
+    long accountNumber;
+    string accountType;
+    double balance;
+    string status;
+
+public:
+    Account(long accNo, string type, double bal) {
+        accountNumber = accNo;
+        accountType = type;
+        balance = bal;
+        status = "Active";
+    }
+
+    virtual void deposit(double amount) {
+        balance += amount;
+        cout << amount << " deposited successfully.\n";
+    }
+
+    virtual void withdraw(double amount) = 0;
+
+    double getBalance() {
+        return balance;
+    }
+
+    long getAccountNumber() {
+        return accountNumber;
+    }
+
+    virtual void display() {
+        cout << "\nAccount Number : " << accountNumber << endl;
+        cout << "Account Type   : " << accountType << endl;
+        cout << "Balance        : " << balance << endl;
+        cout << "Status         : " << status << endl;
+    }
+
+    virtual ~Account() {}
+};
+
+class SavingsAccount : public Account {
+private:
+    double interestRate;
+    double minimumBalance;
+
+public:
+    SavingsAccount(long accNo,double bal,double interest,double minBal)
+        : Account(accNo, "Savings", bal) {
+
+        interestRate = interest;
+        minimumBalance = minBal;
+    }
+
+    void withdraw(double amount) override {
+
+        balance -= amount;
+
+        cout << amount << " withdrawn successfully.\n";
+    }
+
+    void addInterest() {
+        balance += balance * interestRate / 100;
+    }
+
+    void display() override {
+        Account::display();
+
+        cout << "Interest Rate  : " << interestRate << "%" << endl;
+        cout << "Minimum Balance: " << minimumBalance << endl;
+    }
+};
+
+
+class CurrentAccount : public Account {
+private:
+    double overdraftLimit;
+
+public:
+    CurrentAccount(long accNo,double bal,double overdraft)
+        : Account(accNo, "Current", bal) {
+
+        overdraftLimit = overdraft;
+    }
+
+    void withdraw(double amount) override {
+
+        balance -= amount;
+
+        cout << amount << " withdrawn successfully.\n";
+    }
+
+    void display() override {
+        Account::display();
+
+        cout << "Overdraft Limit: " << overdraftLimit << endl;
+    }
+};
+
+
+class FixedDepositAccount : public Account {
+private:
+    double fdAmount;
+    double fdInterestRate;
+    int tenureMonths;
+
+public:
+    FixedDepositAccount(long accNo,double bal,double amount,double rate, int tenure)
+        : Account(accNo, "Fixed Deposit", bal) {
+
+        fdAmount = amount;
+        fdInterestRate = rate;
+        tenureMonths = tenure;
+    }
+
+    void withdraw(double amount) override {
+        cout << "Cannot withdraw before FD maturity.\n";
+    }
+
+    void calculateMaturityAmount() {
+
+        double maturity =
+            fdAmount +
+            (fdAmount * fdInterestRate * tenureMonths) / (12 * 100);
+
+        cout << "Maturity Amount: " << maturity << endl;
+    }
+
+    void display() override {
+        Account::display();
+
+        cout << "FD Amount       : " << fdAmount << endl;
+        cout << "FD Interest Rate: " << fdInterestRate << "%" << endl;
+        cout << "Tenure Months   : " << tenureMonths << endl;
+    }
+};
+
+int main() {
+
+   
+}
