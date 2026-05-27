@@ -3,18 +3,21 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "transaction.h"
 
 class Account
 {
     long m_accountNumber{};
     std::string m_accountType{};
     double m_balance{};
+    std::vector<Transaction> transactions{};
 
 public:
     void deposit(double amount)
     {
         m_balance += amount;
-        std::cout << "Your money has successfully been deposited!\n";
+        transactions.push_back(Transaction{"deposit", amount});
+        std::cout << "Your money has been deposited successfully!\n";
     }
 
     void withdraw(double amount)
@@ -22,7 +25,8 @@ public:
         if(m_balance >= amount)
         {
             m_balance -= amount;
-            std::cout << "Amount successfully withdrawn!\n";
+            transactions.push_back(Transaction{"withdraw", amount});
+            std::cout << "Amount withdrawn successfully!\n";
         }
         else
         {
@@ -38,6 +42,15 @@ public:
     void printBalance() const
     {
         std::cout << "Your current balance is: " << m_balance << std::endl;
+    }
+
+    void printTHistory() const
+    {
+        for(auto& txn : transactions)
+        {
+            std::cout << txn.getTType() << " \t" << txn.getAmount() << '\n';
+        }
+
     }
 
     Account(long accnumber, std::string type, double balance)

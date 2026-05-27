@@ -17,6 +17,20 @@ void getBalance(long acc_number, std::vector<Account>& accounts)
     }
 }
 
+//function to view transaction history.
+void viewTHistory(long acc_number, std::vector<Account>& accounts)
+{
+    Account* tempptr{};
+    if((tempptr = findAccount(acc_number, accounts)) == nullptr)
+    {
+         std::cout << "Your account could not be found!\n";
+    }
+    else
+    {
+        tempptr->printTHistory();
+    }
+}
+
 
 
 int main()
@@ -28,7 +42,7 @@ int main()
     std::cout << "Welcome to Banking Interface! Type one of the commands (in lowercase)\n"
               << "(At any point you may type 'list' to get all available commands.)\n"
               << "* create account\n* check balance\n* deposit\n* withdraw\n"
-              << "* list\n* exit\n";
+              << "* history\n* list\n* exit\n";
 
     //declaring a string which takes input from the terminal.
     std::string inputcmd{};
@@ -108,12 +122,21 @@ int main()
             getBalance(tempaccountnumber, accounts);
         }
 
+        //Case: command to view transaction history.
+        else if(inputcmd == "history")
+        {
+            std::cout << "Please type your account number: ";
+            std::cin >> tempaccountnumber;
+            viewTHistory(tempaccountnumber, accounts);
+
+        }
+
         //Case: command to list all commands.
         else if(inputcmd == "list")
         {
             std::cout << "Available commands are:\n"
                       << "* create account\n* check balance\n* deposit\n* withdraw\n"
-                      << "* list\n* exit\n";
+                      << "* history\n* list\n* exit\n";
         }
 
         //Case: command to exit the interfact.
