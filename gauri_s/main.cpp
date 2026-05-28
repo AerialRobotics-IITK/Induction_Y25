@@ -1,8 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  Modular Banking System — main.cpp
-//  Demonstrates: Account types, Transactions, Loans, ATM Cards, Notifications,
-//                Exception Handling, Factory Pattern, Strategy Pattern
-// ─────────────────────────────────────────────────────────────────────────────
 
 #include <iostream>
 #include <iomanip>
