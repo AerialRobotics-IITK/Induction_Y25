@@ -1,0 +1,6 @@
+services:
+  task4:
+    image: task4
+    build:
+      context: .
+      dockerfile: ./Dockerfile
