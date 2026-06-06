@@ -1,0 +1,9 @@
+FROM gcc:latest
+
+WORKDIR /usr/src/smartbank.cpp
+
+COPY . .
+
+RUN g++ *.cpp -o smartbank
+
+CMD ["./smartbank"]

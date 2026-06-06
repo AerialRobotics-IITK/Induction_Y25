@@ -1,4 +1,4 @@
-# Induction-Y25
+## Induction-Y25
 
 Make a fork of this repo and create a branch in the fork with the following name: `[firstname]_[lastname_initial]`
 Example: `vivek_m` , `soumya_j`
