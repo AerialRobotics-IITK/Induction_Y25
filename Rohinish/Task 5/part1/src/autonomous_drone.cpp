@@ -1,5 +1,5 @@
-#include "drone_fleet/AutonomousDrone.hpp"
-#include "drone_fleet/DroneExceptions.hpp"
+#include "autonomous_drone.hpp"
+#include "drone_exceptions.hpp"
 #include <sstream>
 #include <iomanip>
 #include <cmath>

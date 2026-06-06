@@ -1,7 +1,7 @@
 #ifndef DRONE_HPP
 #define DRONE_HPP
 
-#include "drone_fleet/Vehicle.hpp"
+#include "drone_fleet/vehicle.hpp"
 
 class Drone : public Vehicle {
 public:

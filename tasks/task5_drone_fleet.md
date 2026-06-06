@@ -112,7 +112,7 @@ Make each drone a ROS 2 node written entirely in C++. Build a ROS 2 package `dro
 Write a `Dockerfile` and a `run.sh` script to containerize your workspace.
 
 **Dockerfile requirements:**
-- Base: `osrf/ros:humble-desktop`
+- Base: `ros:jazzy`
 - Copies your entire ROS 2 workspace into the container.
 - Builds the workspace with `colcon build` during image build.
 - Entrypoint sources ROS 2 and the workspace automatically.
@@ -136,5 +136,64 @@ chmod +x run.sh
 # Gamma hits critical within ~30 seconds
 ```
 
+---
+
+## Update — ROS 2 Jazzy & Ubuntu 24.04
+
+> **Important:** This task has been updated to target **ROS 2 Jazzy Jalisco** running on **Ubuntu 24.04 (Noble Numbat)**.
+
+- The Docker base image is now `ros:jazzy` (previously `osrf/ros:humble-desktop`).
+- All `colcon build` and `ros2 launch` commands should be run against **Jazzy**, not Humble.
+- Source your ROS 2 environment with `source /opt/ros/jazzy/setup.bash`.
+- Ensure your `package.xml` and `CMakeLists.txt` are compatible with the Jazzy API (the `rclcpp`, `std_msgs`, and `std_srvs` interfaces remain the same).
+
+---
+
 ## Submission
+
 Open your **Pull Requests (PRs)** by **June 5 EOD**.
+
+### Submission Guidelines
+
+1. Your PR must be raised against the **main** branch of your fork of this repository.
+2. All code must compile and run without errors. The autograder will reject submissions that fail to build.
+3. Do **not** commit build artifacts (`build/`, `install/`, `log/`, `.o`, etc.). Use a proper `.gitignore`.
+4. Your `run.sh` must work out of the box — a reviewer should be able to clone your repo, `cd fleet_ws`, and run `./run.sh` with no manual steps.
+5. Include meaningful commit messages describing what each commit adds or fixes.
+
+### Required Directory Structure
+
+Your repository **must** follow this exact layout for the autograder to pass:
+
+```text
+.
+├── part1/                             
+│   ├── CMakeLists.txt
+│   ├── include/
+│   │   ├── vehicle.hpp
+│   │   ├── drone.hpp
+│   │   ├── mission_drone.hpp
+│   │   ├── autonomous_drone.hpp
+│   │   └── drone_exceptions.hpp
+│   └── src/
+│       ├── vehicle.cpp
+│       ├── drone.cpp
+│       ├── mission_drone.cpp
+│       ├── autonomous_drone.cpp
+│       └── main.cpp
+└── fleet_ws/                           
+    ├── Dockerfile
+    ├── run.sh
+    └── src/
+        └── drone_fleet/
+            ├── package.xml
+            ├── CMakeLists.txt
+            ├── launch/
+            │   └── fleet.launch.py
+            └── src/
+                ├── drone_node.cpp
+                ├── fleet_manager.cpp
+                └── health_monitor.cpp
+```
+
+> **Note:** All 10 C++ source/header files in `part1/` must exist with the exact names listed above. The ROS 2 package must be named `drone_fleet` in `package.xml`.
