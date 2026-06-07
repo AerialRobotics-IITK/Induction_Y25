@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>drone_fleet</name>
+  <version>0.0.1</version>
+  <description>Drone Fleet ROS2 Package</description>
+
+  <maintainer email="jatinagarwal.gwl@gmail.com">Jatin_Agarwal</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
