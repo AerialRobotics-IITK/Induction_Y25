@@ -8,14 +8,14 @@ int main(){
         auto drone = std::make_unique<Drone>("IROC Drone", 80.0f, 150.0f, 15.0f);
 
     auto mdrone = std::make_unique<MissionDrone>(
-        "Scout-2", 90.0f, "Test IROC Drone",
+        "Alpha", 90.0f, "Test IROC Drone",
         std::vector<std::tuple<float,float,float>>{
             {10.f, 20.f, 30.f}, {40.f, 50.f, 60.f}, {70.f, 80.f, 90.f}
         }
     );
 
     auto adrone = std::make_unique<AutonomousDrone>(
-        "Mysterio", 100.0f, "Deep Recon",
+        "Beta", 100.0f, "Deep Recon",
         std::vector<std::tuple<float,float,float>>{
             {5.f, 10.f, 15.f}, {20.f, 25.f, 30.f},
             {35.f, 40.f, 45.f}, {50.f, 55.f, 60.f}
