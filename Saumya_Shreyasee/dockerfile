@@ -1,5 +1,0 @@
-FROM gcc:latest
-WORKDIR /usr/src/smartbank
-COPY task3.cpp .
-RUN g++ task3.cpp -o bank
-CMD ["./bank"]
