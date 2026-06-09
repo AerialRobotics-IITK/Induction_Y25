@@ -1,6 +1,0 @@
-.git
-build/
-smartbank
-*.o
-Dockerfile
-docker-compose.yml

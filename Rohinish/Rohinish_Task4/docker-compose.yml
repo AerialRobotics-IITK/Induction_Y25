@@ -1,6 +1,0 @@
-services:
-  smartbank:
-    build:
-      context: .
-    image: rohinish-task4-smartbank:latest
-    container_name: rohinish-task4-smartbank
