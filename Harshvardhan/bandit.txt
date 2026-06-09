@@ -1,0 +1,41 @@
+Level 0-1: ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+ls to view the readme file, cat readme to print it to output
+
+Level 1-2: 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+cat - didnt work as it just reads std input, so add ./ to go to the -file in the current directory	
+
+Lvl 2-3: MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+used cat "spaces in this filename" to indicate that the whole string is just one filename 	
+
+Level 3-4: 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+do cd inhere to enter the directory, ls -a to see hidden files, found ...Hiding-From_You
+
+Level 4-5: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+(initially just scanned brute opening all files till i got to 07, later realised i had to) do find ./* to check all files and opened file 07
+
+Level 5-6:HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+used file -size 1033c,entered maybehere07, cat ./.file2
+
+Level 6-7: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+find / -size33c -group bandit6 -user bandit7 2>/dev/null, the 2>... command used to redirect the error stream (2) to dev/null and ignore it
+
+Level 7-8: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+Used grep "millionth" data.txt to locate password
+
+Level8-9:4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+sort data.txt |uniq -u sorted data.txt, used piping using |, and used uniq -u to find the unique line
+
+Level 9-10: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+strings data.txt converted binary file to string, grep "===" to find the password
+
+Level 10-11: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+base64 -d data.txt to decode from base 64
+
+Level 11-12: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m' translated a-n, b-o...., shifting each letter by 13
+
+Level 12-13: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+Used mkdir uwu to create a new directory in temp,copied the file into said directory, xxd -r data.txt data1.txt to reverse the hex dump, mv data1.txt data2.bin.gz to move it into a gz file to be gunzipped. keep moving file between gz, bz2,tar and unzipping till i got the final file
+
+Level 13-14: fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq
+Copied the contents of sshkey.private to my own computer under private.key, changed the permissions of the file using chmod 700 private.key, used ssh bandit14@bandit.labs.overthewire.org -p 2220 -i private.key, got the password from /etc/bandit_pass/bandit14

@@ -1,0 +1,9 @@
+FROM gcc:latest
+
+WORKDIR /app
+
+COPY assignment3_new.cpp .
+
+RUN g++ -O2 -o assignment3 assignment3_new.cpp
+
+CMD ["./assignment3"]

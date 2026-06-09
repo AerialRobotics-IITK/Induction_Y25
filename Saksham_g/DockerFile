@@ -1,0 +1,9 @@
+FROM gcc:latest
+
+WORKDIR /Banker
+
+COPY Bank.cpp .
+
+
+RUN g++  Bank.cpp -o Banking
+xRUN ./Banking

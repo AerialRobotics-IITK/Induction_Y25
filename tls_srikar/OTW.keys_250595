@@ -1,0 +1,62 @@
+1 - ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If
+using cat 
+2 - 263JGJPfgU6LtdEvgfWU1XP5yac29mFx
+cat < -
+3 - MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx
+using "" in cat
+4 - 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ
+ls -A
+5 - 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw
+file ./*
+6 - HWasnPhtq9AVKe0dmk45nxy20cvUa6
+using specific option in find command
+7 - morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+using  user , group , size command
+8 - dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+using grep
+9 - 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+using uniq and count option to see 1 time occured word
+10 - FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+use strings and pass that data to grep using piping 
+11 - dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
+use base64
+12 - 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4
+use tr to use the rot13 function again on the text to give back the original text and cat to output the text
+13 - FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn
+following the level instructions then using the decompressing the file and renaming untill we can read it using cat
+14 - MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS
+copying private ssh key into the local file and ssh -i to login
+15 - 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo 
+using nc command
+16 - kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx
+using openssl and connect to 30001
+17 - level16.private
+stored rsa key in the file
+18 - x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+use diff to find the diferent line between the both files
+19 - cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8
+use ssh to connect the "cat readme" to read the file
+20 - 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO
+use ls to identify the main user then ./user cat the file
+21 - EeoULMCra2q0dSkYj561DX7s1CpBuOBt
+nc to listen to a port and echo password to the port
+22 - tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+run a file of cronjob of bandit22
+23 - tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q
+run a file of cronjob of bandit23 and check script to understand the >
+24 - gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8
+make a script to the bandit24 dict where the script is running to get>
+25 - iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
+use loop to find the password
+26 - use rsa
+bypass more shell with small terminal height + v
+27 - upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB
+use steuid
+28 - Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN
+git clone local README
+29 - 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7  
+git log -p found in history
+30 -qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL
+git log --all found in origin/dev branch
+
+
