@@ -1,4 +1,6 @@
-
+# # =========================
+# # Stage 1: Builder
+# # =========================
 # FROM ros:jazzy-ros-base AS builder
 
 # SHELL ["/bin/bash", "-c"]
@@ -57,8 +59,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /ws
 
 # Copy entire ROS workspace
-COPY fleet_ws /ws
-COPY part1 /ws/part1
+COPY . /ws
+COPY ../part1 /ws/part1
 
 # =========================
 # Build workspace

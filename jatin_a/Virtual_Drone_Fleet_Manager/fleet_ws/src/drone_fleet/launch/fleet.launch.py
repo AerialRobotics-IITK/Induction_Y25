@@ -6,7 +6,7 @@ def generate_launch_description():
 
     return LaunchDescription([
 
-        # 🔵 Alpha Drone
+        # Alpha Drome
         Node(
             package='drone_fleet',
             executable='drone_node',
@@ -18,7 +18,7 @@ def generate_launch_description():
             ]
         ),
 
-        # 🟡 Beta Drone
+        # Beta Drone
         Node(
             package='drone_fleet',
             executable='drone_node',
@@ -30,7 +30,7 @@ def generate_launch_description():
             ]
         ),
 
-        # 🔴 Gamma Drone (low battery)
+        # Gamma Drone
         Node(
             package='drone_fleet',
             executable='drone_node',
@@ -42,14 +42,14 @@ def generate_launch_description():
             ]
         ),
 
-        # 🧠 Fleet Manager
+        #  Fleet Manager
         Node(
             package='drone_fleet',
             executable='fleet_manager',
             name='fleet_manager'
         ),
 
-        # ❤️ Health Monitor
+        #  Health Monitor
         Node(
             package='drone_fleet',
             executable='health_monitor',

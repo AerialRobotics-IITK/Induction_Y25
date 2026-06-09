@@ -1,0 +1,28 @@
+# ROS / colcon build artifacts
+build/
+install/
+log/
+
+# Git
+.git
+.gitignore
+
+# OS / editor junk
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Python cache (sometimes appears in ROS workspaces)
+__pycache__/
+*.pyc
+
+# VS Code / IDE
+.vscode/
+.idea/
+
+# Optional: ignore large unnecessary files
+*.bag
+*.log
+
