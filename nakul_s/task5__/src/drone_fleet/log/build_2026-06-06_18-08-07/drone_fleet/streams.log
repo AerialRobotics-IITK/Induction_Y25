@@ -1,0 +1,54 @@
+[0.014s] Invoking command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet -- -j4 -l4
+[0.078s] -- Found ament_cmake: 2.5.6 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.204s] -- Found rclcpp: 28.1.18 (/opt/ros/jazzy/share/rclcpp/cmake)
+[0.241s] -- Found rosidl_generator_c: 4.6.7 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)
+[0.250s] -- Found rosidl_generator_cpp: 4.6.7 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)
+[0.258s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.266s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.300s] -- Found rmw_implementation_cmake: 7.3.3 (/opt/ros/jazzy/share/rmw_implementation_cmake/cmake)
+[0.301s] -- Found rmw_fastrtps_cpp: 8.4.3 (/opt/ros/jazzy/share/rmw_fastrtps_cpp/cmake)
+[0.342s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.375s] -- Found std_msgs: 5.3.7 (/opt/ros/jazzy/share/std_msgs/cmake)
+[0.382s] -- Found std_srvs: 5.3.7 (/opt/ros/jazzy/share/std_srvs/cmake)
+[0.389s] -- Found ament_lint_auto: 0.17.5 (/opt/ros/jazzy/share/ament_lint_auto/cmake)
+[0.451s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[0.451s] -- Configured cppcheck include dirs: /home/nakulsharma/ros2_ws/src/drone_fleet/include
+[0.451s] -- Configured cppcheck exclude dirs and/or files: 
+[0.451s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.451s] -- Configured 'flake8' exclude dirs and/or files: 
+[0.452s] -- Added test 'lint_cmake' to check CMake code style
+[0.453s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.456s] -- Added test 'uncrustify' to check C / C++ code style
+[0.456s] -- Configured uncrustify additional arguments: 
+[0.457s] -- Added test 'xmllint' to check XML markup files
+[0.458s] -- Configuring done (0.4s)
+[0.469s] -- Generating done (0.0s)
+[0.472s] -- Build files have been written to: /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet
+[0.490s] [ 33%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/drone_node.cpp.o[0m
+[0.490s] [ 16%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Vehicle.cpp.o[0m
+[0.490s] [ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/MissionDrone.cpp.o[0m
+[0.490s] [ 66%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Drone.cpp.o[0m
+[0.500s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/Drone.cpp:1:10:[m[K [01;31m[Kfatal error: [m[KDrone.hpp: No such file or directory
+[0.500s]     1 | #include [01;31m[K"Drone.hpp"[m[K
+[0.500s]       |          [01;31m[K^~~~~~~~~~~[m[K
+[0.500s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:1:10:[m[K [01;31m[Kfatal error: [m[KMissionDrone.hpp: No such file or directory
+[0.500s]     1 | #include [01;31m[K"MissionDrone.hpp"[m[K
+[0.500s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[0.500s] compilation terminated.
+[0.500s] compilation terminated.
+[0.500s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/Vehicle.cpp:1:10:[m[K [01;31m[Kfatal error: [m[KVehicle.hpp: No such file or directory
+[0.500s]     1 | #include [01;31m[K"Vehicle.hpp"[m[K
+[0.500s]       |          [01;31m[K^~~~~~~~~~~~~[m[K
+[0.500s] compilation terminated.
+[0.500s] gmake[2]: *** [CMakeFiles/drone_node.dir/build.make:104: CMakeFiles/drone_node.dir/src/Drone.cpp.o] Error 1
+[0.500s] gmake[2]: *** Waiting for unfinished jobs....
+[0.501s] gmake[2]: *** [CMakeFiles/drone_node.dir/build.make:90: CMakeFiles/drone_node.dir/src/Vehicle.cpp.o] Error 1
+[0.501s] gmake[2]: *** [CMakeFiles/drone_node.dir/build.make:118: CMakeFiles/drone_node.dir/src/MissionDrone.cpp.o] Error 1
+[0.691s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/drone_node.cpp:4:10:[m[K [01;31m[Kfatal error: [m[KMissionDrone.hpp: No such file or directory
+[0.691s]     4 | #include [01;31m[K"MissionDrone.hpp"[m[K
+[0.691s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[0.691s] compilation terminated.
+[0.692s] gmake[2]: *** [CMakeFiles/drone_node.dir/build.make:76: CMakeFiles/drone_node.dir/src/drone_node.cpp.o] Error 1
+[0.692s] gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/drone_node.dir/all] Error 2
+[0.692s] gmake: *** [Makefile:146: all] Error 2
+[0.694s] Invoked command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet -- -j4 -l4

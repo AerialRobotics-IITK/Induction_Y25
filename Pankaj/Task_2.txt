@@ -1,0 +1,34 @@
+0. bandit0 given from question
+1. ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If  cat readme
+2. 263JGJPfgU6LtdEvgfWU1XP5yac29mFx cat ./-
+3. MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx cat ./"--spaces in this filename--"
+4. 2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ cd inhere , du , find . , cat ./...Hiding-From-You
+5. 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw cd inhere ,  ls , hit try cat all files
+6. HWasnPhtq9AVKe0dmk45nxy20cvUa6EG find / -user bandit7 -group bandit6 -size 33c
+7. morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj grep millionth data.txt
+8. dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc sort data.txt | uniq -u
+9. 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM strings data.txt | grep '=='
+10. FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey base64 -d data.txt
+11. dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr tr 'A-Za-z' 'N-ZA-Mn-za-m'
+12. 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4 xxd -r, gunzip, bunzip2, tar
+13. FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn ssh -i sshkey.private
+14. MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS echo pass | nc localhost 30000
+15. 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo openssl s_client -connect localhost:30001
+16. kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx nmap scan, openssl s_client
+17. (RSA Key)
+18. x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO diff passwords.old passwords.new
+19. cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8 cat readme
+20. 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO ./bandit20-do
+21. EeoULMCra2q0dSkYj561DX7s1CpBuOBt nc -l listener
+22. tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q cat /tmp/... cronjob
+23. 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga md5sum of "I am user bandit23"
+24. gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 cronjob in /var/spool/bandit24/foo/
+25. iCi86ttT4KSNe1armKiwbQNmB3YJP3q4 brute-force 4-digit PIN on port 30002
+26. s0773xxkk0MXfdqOfPRVr9L3jJBUOgCZ bypass more shell with small terminal height + v
+27. upsNCc7vzaRDx6oZC6GiR6ERwe1MowGB ./bandit27-do cat /etc/bandit_pass/bandit27
+28. Yz9IpL0sBcCeuG7m9uQFt8ZNpS4HZRcN git clone local README
+29. 4pT1t5DENaYuqnqvadYs1oE4QLCdjmJ7 git log -p found in history
+30. qp30ex3VLz5MDG1n91YowTv4Q8l7CDZL git log --all found in origin/dev branch
+31. fb5S2xb7bRyFmAvQYQGEqsbhVyJqhnDy git show secret tag
+32. 3O9RfhqyAlVBEZpVb6LYStshZoqoSx5K push key.txt to git
+33. tQdtbs5D5i2vJwkO8mEyYEyTL8izoeJ0 escape \$0 from uppercase shell

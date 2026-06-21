@@ -1,0 +1,4 @@
+source;share/drone_fleet/local_setup.bash
+source;share/drone_fleet/local_setup.dsv
+source;share/drone_fleet/local_setup.sh
+source;share/drone_fleet/local_setup.zsh

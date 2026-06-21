@@ -1,0 +1,229 @@
+$ at the end of the shell prompt indicates that it is ready to accept commands
+echo- displays the text 
+/root directory
+pwd-print working directory- displays full path of the directory u are currently in starting from the root
+cd- change directory
+u can change directory either using absolute path or relative path(if we are already in the parent directory)
+cd.-current directory
+cd..-parent directory
+cd~-home directory
+cd- last directory u were in
+ls will list the directories and files in ur current directory(we can also specify a path to list contents of a diff directory)
+filenames starting with a dot are hidden
+we can view them with the help of -a flag
+ls -l: -l flag stands for long, It will provide a detailed list of files(file permissions, no of links, size, owner name etc)
+ls -r command lists files and directories in reverse alphabetical order.
+we can combine these flag commands like ls -la or ls -al(both are same)
+touch can be used to create a new file 
+If touch is used on an existing file it will update its timestamps to current time.
+file command gives the description of its file contents
+The basic ability of cat is to display the content of a single file directly in the terminal. It can also combine multiple files and display the output
+less /filename-to view text files to fit on a single screen(standard shell commands don't work here)
+Arrow Keys and Page Keys: Use Page Up, Page Down, Up, and Down to navigate line by line or page by page.
+Go to Start: Press g to move directly to the beginning of the text file.
+Go to End: Press G (Shift + g) to jump to the end of the text file.
+/term: Searches forward for "term".
+?term: Searches backward for "term".
+n: Jumps to the next occurrence of the search term.
+N: Jumps to the previous occurrence.
+q: To exit the less viewer
+cp source/destination - copies the file 
+cp -r source/destination- copies the directory
+cp overwrites the file if the destination has the same name 
+cp -i(interactive flag)(prompts for confirmation before overwriting anything)
+mv- move command( can rename files and move files)
+mkdir- helps make an directory mkdir -p(can create an directory and its parent simultaneously
+rm to delete files rm -r for directory 
+find [path] [expression] for searching filename (-name)
+we can also specify the type(-type) 
+
+
+ssh is used to connect to a remote server.
+level 1
+ls-list files in current directory
+cat- print contents of the file
+level 2
+./ is used for reading special symbols
+ls
+cat ./-
+
+level 3
+"" keeps the full filename together
+\ :escapes spaces
+
+level 4
+ls -a shows hidden files
+
+level 5
+file ./* checks the type of every file in the folder
+
+level 6
+find . -type f -size 1033c ! -executable
+find . search the current directory.
+-type f (search only files)
+! -executable means the file should not be executable
+
+level 7 
+2>/dev/null hides permission denied errors.
+find/ searches the whole system from root
+ 
+level 8
+grep searches for a word 
+
+level 9
+sort data.txt sorts all lines.
+| sends output of one command to another command.
+uniq -u prints only lines that occur once.
+uniq only works properly when repeated lines are together, so we sort first.
+
+level 10
+strings data.txt(extracts readable text)
+strings data.txt | grep =
+
+level 11
+-d decodes the text 
+
+level 12 
+ROT13 shifts every letter by 13 positions
+cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m' 
+tr translate characters 
+
+level 13
+hexdump-display contents of file in formats like hexadecimal, octal, ASCII.
+xxd -r Reverses a hexdump into binary( can create without the -r flag)
+mktemp creates a temporary directory(cp to copy )
+file data identifies the type of the file
+mv renames the files
+gzip -d (decompresses gzip files)
+tar groups multiple files and directories together without reducing their size 
+tar preserves critical file attributes, including permissions, ownership, and directory structures.
+tar -xvf archive.tar - extracts the contents of the archive into the current directory.
+tar -czvf archive.tar.gz /folder -Adds the z flag to compress the archive using Gzip.
+
+level 14
+scp- securely transferring files between local host and a remote host or two remote hosts using ssh protocol
+chmod(change mode)-used to change access permissions(read, write and execute)
+Permissions apply to three distinct groups:
+u (User/Owner)
+g (Group)(shares access rights)
+o (Others)(Public)
+There are three basic access types:
+r (Read): Value = 4
+w (Write): Value = 2
+x (Execute): Value = 1
+You use a three-digit code. 
+Each digit is the sum of the permissions for User, Group, and Others.
+chmod 755 file.sh
+7 (4+2+1): Owner can read, write, execute.
+5 (4+1): Group can read, execute.
+5 (4+1): Others can read, execute.
+
+The nc (Netcat) command reads and writes data across network connections using TCP or UDP.
+TCP(guarantees that data arrives safely) and UDP are just communication channels that send data across the internet. (doesn't create an encrypted connection.
+-l: Listen mode (waits for incoming connections).
+-p: Specifies the source port to use.
+-u: Switches from default TCP to UDP mode.
+
+level 15
+openssl s_client -connect localhost:30001
+SSL  encrypts the data sent between a user and a server.
+s_client allows you to establish a secure connection to a remote server, view its SSL/TLS certificates, test cryptographic configurations, and troubleshoot connection issues.
+open ssl is a library
+-connect specifies the target and host 
+
+level 16
+nmap -p 31000-32000 localhost
+n map -scans ports
+-p 31000-32000 scans the ports of only the given range
+local host-this computer  
+nc is used to test ports.
+openssl s_client -connect localhost:PORT
+nano /tmp/bandit17key
+chmod 600 /tmp/bandit17key
+
+level 17
+diff: Compares two files line by line.
+Lines marked with <: Come from the first file.
+Lines marked with >: Come from the second file.
+
+level 18
+The .bashrc file is a hidden shell script located in your user's home directory (~/.bashrc). It runs automatically every time you open a new interactive terminal window or tab.
+ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
+
+level 19
+ A computer program can only do things you have permission to do. If you try to open a locked system file, the computer blocks you. But sometimes, you need to do something restricted, like changing your account password. The password file is locked up tight by the computer administrator (Root).Here is how the computer handles it:You run the passwd program.The computer notices the program has the Setuid badge on it.The computer says: "Okay, for the next 5 seconds while this program runs, I will pretend you are the Root administrator. "The program safely changes your password. It generally has a lot of restrictions for it to be actually safe.
+
+level 20
+nc -l -p 12345
+./suconnect 12345
+The program connects to a port chosen by us.
+first create a listening service using netcat.
+Run the detuid program and gave it that port.
+When it connected, I sent the current password.
+
+level 21 
+Cron allows us to schedule scripts or programs to run automatically.
+ .---------------- minute (0 - 59)
+
+ |  .------------- hour (0 - 23)
+ |  |  .---------- day of month (1 - 31)
+ |  |  |  .------- month (1 - 12)
+ |  |  |  |  .---- day of week (0 - 6) (Sunday to Saturday)
+ |  |  |  |  |
+ *  *  *  *  *  /path/to/command
+crontab -l: List all your currently active scheduled tasks.c
+crontab-e: Open your personal crontab file in a text editor to add, change, or delete schedules.
+crontab -r: Delete your entire schedule completely.
+ls /etc/cron.d/(finds the relevant cron job)
+cat /etc/cron.d/cronjob_bandit22
+cat /usr/bin/cronjob_bandit22.sh
+cat /tmp/some-output-file
+
+level 22
+
+myname=$(whoami)
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+cat /etc/bandit_pass/$myname > /tmp/$mytarget
+
+whoami returns the name of the user currently running it
+$()Command Substitution. It tells Linux: "Run the command inside the parentheses first, and then paste its text output right here."
+md5sum: This is a hashing algorithm. It takes any input text and turns it into a fixed 32-character string of random letters and numbers
+cut -d ' ' -f 1: Notice that trailing space and dash (  -) at the end of the hash? The cut command cleans that up. It splits the text at the space (-d ' ') and keeps only the first field (-f 1), which is just the clean hash string.
+The > arrow redirects that text out of the terminal screen and dumps it straight into a new file inside the temporary folder named /tmp/8ca319486bfbbc3663ea0fbe81326349
+
+level 23
+Normally, you cannot execute code inside other users' accounts. However, administrators sometimes create public "dropbox" folders. Anyone can drop a file into this folder, and a background service (like a cron job) will process it. If that background service runs with higher privileges, it will execute your file using its power, not yours.
+A shell script is a plain text file containing a list of terminal commands. The very first line must always be #!/bin/bash (called a Shebang). This tells the operating system exactly which command interpreter to use to read and execute the rest of the lines in the file.
+echo with Redirection (>): Used to write lines of code directly into a file without opening a text editor.
+cd /tmp
+mktemp -d
+
+level 24
+Brute-forcing is a trial-and-error method where an automated program systematically guesses thousands of combinations (like passwords or PINs) until it finds the correct one.
+Instead of manually typing 10,000 different combinations into your terminal, you can write a short for loop script.
+for i in {0000..9999}; do echo "PASSWORD$i"; done > wordlist.txt
+cat wordlist.txt | nc localhost 30002
+
+level 25
+When you connect to some secure servers, administrators configure your account to use a restricted shell (rbash). This environment locks you down: you cannot use cd to change directories, you cannot use environment variables, and you cannot execute unauthorized commands. It acts like a digital prison cell.
+resize the window to trigger the less and more and then use vim.
+:set shell=/bin/bash: You quietly tell Vim: "Hey, if I ever ask you to open a terminal interface, make sure you use the standard, unrestricted bash"
+:shell: This command tells Vim: "Pause the text editor for a moment, drop me out into a fresh, live command terminal, and let me type commands."
+
+level 26
+Every user profile on a Linux system has a default shell assigned to it inside the system's central identity file (/etc/passwd). When you break out using Vim, you only have a temporary bash shell inside that editor process.
+When a restricted shell prevents you from using standard terminal features, you can often bypass these blocks by calling binaries directly from their absolute system file paths (e.g., typing /bin/sh instead of just sh)
+
+level 27
+git clone <url>: Copies a remote repository onto your local system.
+git log: Displays the historical timeline of commits (saves) made to the project.
+git show <commit_id>: Allows you to inspect the exact changes or code added during a specific save point in history.
+
+level 28
+cd /tmp
+MYDIR=$(mktemp -d)
+cd $MYDIR
+git clone ssh://bandit28-git@localhost:2220/home/bandit28-git/repo
+cd repo
+#View the full code history and file modifications all at once
+git log -p

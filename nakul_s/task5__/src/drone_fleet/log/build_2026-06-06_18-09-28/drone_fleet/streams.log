@@ -1,0 +1,43 @@
+[0.011s] Invoking command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet -- -j4 -l4
+[0.047s] [ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/drone_node.cpp.o[0m
+[0.047s] [ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Vehicle.cpp.o[0m
+[0.047s] [ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Drone.cpp.o[0m
+[0.047s] [ 66%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/MissionDrone.cpp.o[0m
+[0.284s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kvoid MissionDrone::[01;32m[Kskip_waypoint[m[K(const std::string&)[m[K’:
+[0.284s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:34:24:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kreason[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.285s]    34 |     [01;35m[Kconst std::string& reason[m[K)
+[0.285s]       |     [01;35m[K~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[0.285s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kbool MissionDrone::[01;32m[Kmission_complete[m[K() const[m[K’:
+[0.285s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:41:35:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst int[m[K’ and ‘[01m[Kstd::vector<std::tuple<float, float, float> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+[0.285s]    41 |     return [01;35m[Kcurrent_waypoint_index >=[m[K
+[0.285s]       |            [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~^~[m[K
+[0.285s]    42 | [01;35m[K           waypoints.size()[m[K;
+[0.285s]       |            [01;35m[K~~~~~~~~~~~~~~~~[m[K        
+[0.379s] [ 83%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/AutonomousDrone.cpp.o[0m
+[0.568s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:[m[K In member function ‘[01m[Kvoid AutonomousDrone::[01;32m[Kdetect_obstacle[m[K(std::tuple<float, float, float>, const std::string&)[m[K’:
+[0.568s] [01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:34:35:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kposition[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[0.568s]    34 |     [01;35m[Kstd::tuple<float,float,float> position[m[K,
+[0.568s]       |     [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K
+[2.270s] [100%] [32m[1mLinking CXX executable drone_node[0m
+[2.433s] [100%] Built target drone_node
+[2.445s] Invoked command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet -- -j4 -l4
+[2.454s] Invoking command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet
+[2.458s] -- Install configuration: ""
+[2.458s] -- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/lib/drone_fleet/drone_node
+[2.459s] -- Set non-toolchain portion of runtime path of "/home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/lib/drone_fleet/drone_node" to ""
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/package_run_dependencies/drone_fleet
+[2.459s] -- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/parent_prefix_path/drone_fleet
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/ament_prefix_path.sh
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/ament_prefix_path.dsv
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/path.sh
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/path.dsv
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.bash
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.sh
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.zsh
+[2.459s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.dsv
+[2.459s] -- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/package.dsv
+[2.460s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/packages/drone_fleet
+[2.460s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/cmake/drone_fleetConfig.cmake
+[2.460s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/cmake/drone_fleetConfig-version.cmake
+[2.460s] -- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/package.xml
+[2.464s] Invoked command in '/home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/nakulsharma/ros2_ws/src/drone_fleet/build/drone_fleet

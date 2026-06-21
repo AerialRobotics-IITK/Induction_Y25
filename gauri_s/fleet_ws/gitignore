@@ -1,0 +1,13 @@
+# ROS 2 build artifacts — generated locally, not committed
+build/
+install/
+log/
+
+# Editor
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,396 @@
+#include <vector>
+#include <cmath>
+#include <string>
+#include <exception>
+#include <iostream>
+using namespace std;
+
+// Exception classes - declare first
+class InsufficientBalanceException : public exception
+{
+public:
+    const char *what() const noexcept override
+    {
+        return "Insufficient balance!";
+    }
+};
+
+class InvalidPINException : public exception
+{
+public:
+    const char *what() const noexcept override
+    {
+        return "Invalid PIN entered!";
+    }
+};
+
+class AccountBlockedException : public exception
+{
+public:
+    const char *what() const noexcept override
+    {
+        return "Account is blocked!";
+    }
+};
+
+class LoanRejectedException : public exception
+{
+public:
+    const char *what() const noexcept override
+    {
+        return "Loan has been rejected!";
+    }
+};
+
+// Forward declarations
+class Branch;
+class Customer;
+class Account;
+class Transaction;
+class Employee;
+class Loan;
+
+class Bank
+{
+protected:
+    int bankId;
+
+public:
+    string bankName;
+    vector<Branch *> branches;
+    vector<Customer *> customers;
+    vector<Employee *> employees;
+};
+
+class Branch
+{
+protected:
+    int branchId;
+    string IFSCCode;
+
+public:
+    string branchName;
+    string address;
+    vector<Account *> accounts;
+    vector<Employee *> employees;
+};
+
+class Customer
+{
+protected:
+    int customerId;
+    string aadhaarNumber;
+    string PANNumber;
+
+public:
+    string fullName;
+    string dob;
+    string gender;
+    string mobileNumber;
+    string email;
+    string address;
+    vector<Account *> accounts;
+    vector<Loan *> loans;
+};
+
+class Account
+{
+protected:
+    long accountNumber;
+    string accountType;
+    double balance;
+    string dateOpened;
+
+public:
+    string status;
+    Branch *branch;
+    Customer *customer;
+    vector<Transaction *> transactions;
+
+    virtual void deposit(double amount) = 0;
+    virtual void withdraw(double amount) = 0;
+    virtual ~Account() {}
+};
+
+class SavingsAccount : public Account
+{
+public:
+    double interestRate;
+    double minimumBalance;
+
+    void deposit(double amount) override
+    {
+        balance = balance + amount;
+    }
+
+    void withdraw(double amount) override
+    {
+        if (status == "blocked")
+        {
+            throw AccountBlockedException();
+        }
+        if (balance < amount)
+        {
+            throw InsufficientBalanceException();
+        }
+        if (balance - amount < minimumBalance)
+        {
+            throw InsufficientBalanceException();
+        }
+        balance -= amount;
+    }
+};
+
+class CurrentAccount : public Account
+{
+public:
+    double overdraftLimit;
+    string businessName;
+
+    void deposit(double amount) override
+    {
+        balance = balance + amount;
+    }
+
+    void withdraw(double amount) override
+    {
+        if (status == "blocked")
+        {
+            throw AccountBlockedException();
+        }
+        if (balance + overdraftLimit < amount)
+        {
+            throw InsufficientBalanceException();
+        }
+        balance -= amount;
+    }
+};
+
+class FixedDepositAccount : public Account
+{
+public:
+    double FDAmount;
+    string maturityDate;
+    double FDInterestRate;
+    int tenureMonths;
+
+    void deposit(double amount) override
+    {
+        FDAmount = amount;
+        balance = FDAmount + (FDAmount * FDInterestRate / 100 * tenureMonths / 12);
+    }
+
+    void withdraw(double amount) override
+    {
+        throw InsufficientBalanceException();
+    }
+};
+
+class Transaction
+{
+protected:
+    int transactionId;
+
+public:
+    string transactionType;
+    double amount;
+    string transactionDate;
+    Account *senderAccount;
+    Account *receiverAccount;
+    string status;
+};
+
+class Loan
+{
+public:
+    int loanId;
+    string loanType;
+    double loanAmount;
+    double interestRate;
+    int tenureYears;
+    double EMIAmount;
+    string loanStatus;
+    Customer *customer;
+
+    void calculateEMI()
+    {
+        int n = 12 * tenureYears;
+        double p = loanAmount;
+        double r = (interestRate / 12) / 100;
+        EMIAmount = (p * r * pow(1 + r, n)) / (pow(1 + r, n) - 1);
+    }
+};
+
+class ATMCard
+{
+protected:
+    long cardNumber;
+    int CVV;
+    string expiryDate;
+    int PIN;
+    string cardType;
+    string cardStatus;
+    Account *linkedAccount;
+
+public:
+    void setCardNumber(long num) { cardNumber = num; }
+    void setCardType(string type) { cardType = type; }
+    void setCardStatus(string stat) { cardStatus = stat; }
+    void setPIN(int p) { PIN = p; }
+    long getCardNumber() { return cardNumber; }
+    string getCardType() { return cardType; }
+};
+
+class Employee
+{
+protected:
+    int employeeId;
+    double salary;
+
+public:
+    string employeeName;
+    string designation;
+    Branch *branch;
+};
+
+class Notification
+{
+public:
+    string message;
+    virtual void send() = 0;
+    virtual ~Notification() {}
+};
+
+class SMSNotification : public Notification
+{
+public:
+    string phoneNumber;
+    string deliveryStatus;
+
+    void send() override
+    {
+        cout << "SMS sent to :" << phoneNumber << "\n"
+             << message << endl;
+        deliveryStatus = "sent";
+    }
+};
+
+class EmailNotification : public Notification
+{
+public:
+    string emailAddress;
+    string subject;
+    string deliveryStatus;
+
+    void send() override
+    {
+        cout << "Email sent to :" << emailAddress << "\nSubject:" << subject << "\n"
+             << message << endl;
+        deliveryStatus = "sent";
+    }
+};
+
+class AccountFactory
+{
+public:
+    static Account *createAccount(string typ)
+    {
+        if (typ == "savings")
+        {
+            return new SavingsAccount();
+        }
+        else if (typ == "current")
+        {
+            return new CurrentAccount();
+        }
+        else if (typ == "fd")
+        {
+            return new FixedDepositAccount();
+        }
+        return nullptr;
+    }
+};
+
+int main()
+{
+    Bank bank;
+    bank.bankName = "Anthropic Bank";
+
+    Branch branch;
+    branch.branchName = "Kanpur Main Branch";
+    branch.address = "MG Road, Kanpur";
+
+    bank.branches.push_back(&branch);
+    cout << "Bank created: " << bank.bankName << endl;
+    cout << "Branch: " << branch.branchName << endl;
+
+    Customer customer;
+    customer.fullName = "Rahul Sharma";
+    customer.mobileNumber = "9876543210";
+    customer.email = "rahul@email.com";
+    customer.dob = "01-01-2000";
+    cout << "Customer: " << customer.fullName << endl;
+
+    Account *savings = AccountFactory::createAccount("savings");
+    Account *current = AccountFactory::createAccount("current");
+    Account *fd = AccountFactory::createAccount("fd");
+    cout << "Accounts created using Factory" << endl;
+
+    savings->deposit(10000);
+    current->deposit(20000);
+    cout << "Deposits done" << endl;
+
+    savings->withdraw(2000);
+    cout << "Withdrawal successful" << endl;
+
+    try
+    {
+        savings->withdraw(999999);
+    }
+    catch (InsufficientBalanceException &e)
+    {
+        cout << "Exception caught: " << e.what() << endl;
+    }
+
+    try
+    {
+        savings->status = "blocked";
+        savings->withdraw(100);
+    }
+    catch (AccountBlockedException &e)
+    {
+        cout << "Exception caught: " << e.what() << endl;
+    }
+
+    Loan loan;
+    loan.loanType = "Home";
+    loan.loanAmount = 500000;
+    loan.interestRate = 8.5;
+    loan.tenureYears = 10;
+    loan.calculateEMI();
+    cout << "Loan EMI: " << loan.EMIAmount << endl;
+
+    ATMCard card;
+    card.setCardNumber(1234567890123456);
+    card.setCardType("Debit");
+    card.setCardStatus("Active");
+    card.setPIN(1234);
+    cout << "ATM Card created: " << card.getCardType() << endl;
+
+    SMSNotification sms;
+    sms.phoneNumber = "9876543210";
+    sms.message = "Your account has been credited with Rs.10000";
+    sms.send();
+
+    EmailNotification email;
+    email.emailAddress = "rahul@email.com";
+    email.subject = "Transaction Alert";
+    email.message = "Your account has been credited with Rs.10000";
+    email.send();
+
+    delete savings;
+    delete current;
+    delete fd;
+
+    return 0;
+}

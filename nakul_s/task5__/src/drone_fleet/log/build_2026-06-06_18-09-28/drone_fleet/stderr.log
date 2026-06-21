@@ -1,0 +1,14 @@
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kvoid MissionDrone::[01;32m[Kskip_waypoint[m[K(const std::string&)[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:34:24:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kreason[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   34 |     [01;35m[Kconst std::string& reason[m[K)
+      |     [01;35m[K~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kbool MissionDrone::[01;32m[Kmission_complete[m[K() const[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:41:35:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst int[m[K’ and ‘[01m[Kstd::vector<std::tuple<float, float, float> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+   41 |     return [01;35m[Kcurrent_waypoint_index >=[m[K
+      |            [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~^~[m[K
+   42 | [01;35m[K           waypoints.size()[m[K;
+      |            [01;35m[K~~~~~~~~~~~~~~~~[m[K        
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:[m[K In member function ‘[01m[Kvoid AutonomousDrone::[01;32m[Kdetect_obstacle[m[K(std::tuple<float, float, float>, const std::string&)[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:34:35:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kposition[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   34 |     [01;35m[Kstd::tuple<float,float,float> position[m[K,
+      |     [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K

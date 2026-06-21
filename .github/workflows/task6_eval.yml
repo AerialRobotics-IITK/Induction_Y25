@@ -1,0 +1,35 @@
+name: Task 6 Evaluation
+on:
+  pull_request:
+    paths:
+      - '**/task_6/swarm_tracker/**'
+
+jobs:
+  build-and-lint:
+    runs-on: ubuntu-24.04
+    container:
+      image: osrf/ros:jazzy-desktop
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup environment and build
+        run: |
+          # Find the student's task_6 directory
+          STUDENT_DIR=$(find . -type d -name "swarm_tracker" | grep "task_6" | head -n 1)
+          if [ -z "$STUDENT_DIR" ]; then
+            echo "Error: swarm_tracker package not found in a task_6 directory!"
+            exit 1
+          fi
+          
+          cd $STUDENT_DIR/..
+          echo "Found workspace at $(pwd)"
+          
+          # Initialize rosdep
+          apt-get update
+          rosdep update
+          rosdep install --from-paths swarm_tracker --ignore-src -r -y
+          
+          # Build package
+          . /opt/ros/jazzy/setup.sh
+          colcon build --packages-select swarm_tracker --event-handlers console_direct+
