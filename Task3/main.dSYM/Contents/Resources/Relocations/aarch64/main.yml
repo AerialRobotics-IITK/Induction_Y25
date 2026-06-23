@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/aryaman/Induction_Y25/Task3/main'
+relocations:     []
+...

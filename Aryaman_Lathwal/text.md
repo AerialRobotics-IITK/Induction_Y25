@@ -33,6 +33,38 @@ Using tr command which translates by mapping from one string to another. So if w
 
 To 13: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn had to do shitton of work! Commands used: mktemp to make a temporary directory in /tmp and then cp to copy the file over there. 'xxd -r > banana' for reversing the hexadump and copying the contents to a file called banana. Then gzip -d to unzip also bzip2 -d to unzip and tar -xf to unarchive. Also renaming the files according to their file format so that unzip would give proper file
 
-To 14: for this one, had to copy the contents of the private key (lot of text) into a file in my own local machine using 'nano bandit14' command to paste the text. Bandit14 simply being the name of the file. Then in ssh, extra '-i bandit14' to use the key.
+To 14: for this one, had to copy the contents of the private key (lot of text) into a file in my own local machine using 'nano bandit14' command to paste the text, bandit14 simply being the name of the file. Then use 'chmod 600 <file>' to change the permissions of the file, first digit for owner, 6 meaning read and write perm, second digit group, 0 means no perm, third digit for others, 0 again no perm. Then in ssh, extra '-i bandit14' to use the key.
 
-To 15: retrieved lvl14pass: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS. 
+To 15: 8xCjnmgoKbGLhHFAZlGE5Tmu4M2tKJQo retrieved lvl14pass: MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS. Used 'nc localhost 30000' command to connect to localhost on port 30000. Then it waits for password input to give back the next.
+
+To 16: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx we are doing a similar thing. Connecting to localhost on some specified port. But this time we are required to use encryption which is achieved by the command 'openssl s_client -connect localhost:<port>' against 'nc localhost <port>'. The arguments are different and must be looked at carefully.
+
+To 17: Received a private key. Stored in ~/gitp . Used the command 'nmap -p 31000-32000 localhost', nmap means network mapping, -p tells which ports to scan for open status, and localhost to tell where to check the ports. Then used same openssl command but the output was not the true one so used an option -quiet to mute the protocol itself idk.
+
+To 18: x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO easy enough. 'diff <file1> <file2>' shows whats different.
+
+To 19: cGWpMaKXVwDUNgPAVJbWYuGHVn9zl3j8 had to use 'cat readme' right next to the ssh command to read the file before logging out.
+
+To 20: 0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO the file bandit20.do allows us to access stuff which only the user bandit20 can. For example the file /etc/bandit_pass/bandit20 . So the command was './bandit20-do cat /etc/bandit_pass/bandit20' to open that file as bandit20.
+
+To 21: EeoULMCra2q0dSkYj561DX7s1CpBuOBt for this one, the binary connects to a port, so we must act like a server and listen on a port. We use the nc command again. 'nc -l -p <any port>' here -l means we listen and wait for someone to connect. And -p is for specifying port.
+
+To 22: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q in the cron directory, bandit22 cronjob was running a script, which had location of the file it was modifying, which had the pass.
+
+To 23: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga checked what the script was trying to say.
+
+To 24: gb8KRRCsshuZXI0tUuR6ypOFjiZbf3G8 made a temp directory with mktemp, made a script with nano with the program: cat /etc/bandit_pass/bandit24 > /tmp/myoutput and then extracted pass.
+
+To 25: iCi86ttT4KSNe1armKiwbQNmB3YJP3q4 coded a script which runs from 0000 to 9999 and eventually password came.
+
+To 26: 
+
+
+
+
+
+
+
+
+
+
