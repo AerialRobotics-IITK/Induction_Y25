@@ -1,0 +1,37 @@
+[0.628s] Invoking command in '/home/furzaan/furzaan_task6/swarm_tracker': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/furzaan/furzaan_task6/build/swarm_tracker/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/swarm_tracker build --build-base /home/furzaan/furzaan_task6/build/swarm_tracker/build install --record /home/furzaan/furzaan_task6/build/swarm_tracker/install.log --single-version-externally-managed install_data
+[0.821s] running egg_info
+[0.822s] creating ../build/swarm_tracker/swarm_tracker.egg-info
+[0.837s] writing ../build/swarm_tracker/swarm_tracker.egg-info/PKG-INFO
+[0.837s] writing dependency_links to ../build/swarm_tracker/swarm_tracker.egg-info/dependency_links.txt
+[0.837s] writing entry points to ../build/swarm_tracker/swarm_tracker.egg-info/entry_points.txt
+[0.837s] writing requirements to ../build/swarm_tracker/swarm_tracker.egg-info/requires.txt
+[0.837s] writing top-level names to ../build/swarm_tracker/swarm_tracker.egg-info/top_level.txt
+[0.837s] writing manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+[0.868s] reading manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+[0.869s] writing manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+[0.869s] running build
+[0.869s] running build_py
+[0.869s] creating /home/furzaan/furzaan_task6/build/swarm_tracker/build
+[0.869s] creating /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib
+[0.869s] creating /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+[0.869s] copying swarm_tracker/follower_node.py -> /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+[0.869s] copying swarm_tracker/__init__.py -> /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+[0.869s] running install
+[0.875s] running install_lib
+[0.891s] creating /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+[0.891s] copying /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker/follower_node.py -> /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+[0.891s] copying /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker/__init__.py -> /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+[0.891s] byte-compiling /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker/follower_node.py to follower_node.cpython-312.pyc
+[0.893s] byte-compiling /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker/__init__.py to __init__.cpython-312.pyc
+[0.893s] running install_data
+[0.893s] creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index
+[0.893s] creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index
+[0.893s] creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index/packages
+[0.893s] copying resource/swarm_tracker -> /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index/packages
+[0.894s] copying package.xml -> /home/furzaan/furzaan_task6/install/swarm_tracker/share/swarm_tracker
+[0.894s] running install_egg_info
+[0.909s] Copying ../build/swarm_tracker/swarm_tracker.egg-info to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker-0.0.0-py3.12.egg-info
+[0.910s] running install_scripts
+[1.009s] Installing follower_node script to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/swarm_tracker
+[1.009s] writing list of installed files to '/home/furzaan/furzaan_task6/build/swarm_tracker/install.log'
+[1.030s] Invoked command in '/home/furzaan/furzaan_task6/swarm_tracker' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PS1=\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ PYTHONPATH=/home/furzaan/furzaan_task6/build/swarm_tracker/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/swarm_tracker build --build-base /home/furzaan/furzaan_task6/build/swarm_tracker/build install --record /home/furzaan/furzaan_task6/build/swarm_tracker/install.log --single-version-externally-managed install_data

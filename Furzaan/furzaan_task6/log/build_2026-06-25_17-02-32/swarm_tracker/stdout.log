@@ -1,0 +1,35 @@
+running egg_info
+creating ../build/swarm_tracker/swarm_tracker.egg-info
+writing ../build/swarm_tracker/swarm_tracker.egg-info/PKG-INFO
+writing dependency_links to ../build/swarm_tracker/swarm_tracker.egg-info/dependency_links.txt
+writing entry points to ../build/swarm_tracker/swarm_tracker.egg-info/entry_points.txt
+writing requirements to ../build/swarm_tracker/swarm_tracker.egg-info/requires.txt
+writing top-level names to ../build/swarm_tracker/swarm_tracker.egg-info/top_level.txt
+writing manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+reading manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+writing manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/furzaan/furzaan_task6/build/swarm_tracker/build
+creating /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib
+creating /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+copying swarm_tracker/follower_node.py -> /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+copying swarm_tracker/__init__.py -> /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker
+running install
+running install_lib
+creating /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+copying /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker/follower_node.py -> /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+copying /home/furzaan/furzaan_task6/build/swarm_tracker/build/lib/swarm_tracker/__init__.py -> /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker
+byte-compiling /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker/follower_node.py to follower_node.cpython-312.pyc
+byte-compiling /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker/__init__.py to __init__.cpython-312.pyc
+running install_data
+creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index
+creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index
+creating /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index/packages
+copying resource/swarm_tracker -> /home/furzaan/furzaan_task6/install/swarm_tracker/share/ament_index/resource_index/packages
+copying package.xml -> /home/furzaan/furzaan_task6/install/swarm_tracker/share/swarm_tracker
+running install_egg_info
+Copying ../build/swarm_tracker/swarm_tracker.egg-info to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker-0.0.0-py3.12.egg-info
+running install_scripts
+Installing follower_node script to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/swarm_tracker
+writing list of installed files to '/home/furzaan/furzaan_task6/build/swarm_tracker/install.log'

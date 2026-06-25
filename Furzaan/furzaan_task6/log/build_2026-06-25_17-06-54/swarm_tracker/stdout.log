@@ -1,0 +1,19 @@
+running egg_info
+writing ../build/swarm_tracker/swarm_tracker.egg-info/PKG-INFO
+writing dependency_links to ../build/swarm_tracker/swarm_tracker.egg-info/dependency_links.txt
+writing entry points to ../build/swarm_tracker/swarm_tracker.egg-info/entry_points.txt
+writing requirements to ../build/swarm_tracker/swarm_tracker.egg-info/requires.txt
+writing top-level names to ../build/swarm_tracker/swarm_tracker.egg-info/top_level.txt
+reading manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+writing manifest file '../build/swarm_tracker/swarm_tracker.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+running install_egg_info
+removing '/home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker-0.0.0-py3.12.egg-info' (and everything under it)
+Copying ../build/swarm_tracker/swarm_tracker.egg-info to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/python3.12/site-packages/swarm_tracker-0.0.0-py3.12.egg-info
+running install_scripts
+Installing follower_node script to /home/furzaan/furzaan_task6/install/swarm_tracker/lib/swarm_tracker
+writing list of installed files to '/home/furzaan/furzaan_task6/build/swarm_tracker/install.log'
