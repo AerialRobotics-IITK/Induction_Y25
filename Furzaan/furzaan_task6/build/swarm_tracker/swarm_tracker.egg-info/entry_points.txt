@@ -1,2 +1,0 @@
-[console_scripts]
-follower_node = swarm_tracker.follower_node:main

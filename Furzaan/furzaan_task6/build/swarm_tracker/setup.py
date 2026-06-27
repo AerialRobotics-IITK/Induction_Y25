@@ -1,1 +1,0 @@
-/home/furzaan/furzaan_task6/swarm_tracker/setup.py
