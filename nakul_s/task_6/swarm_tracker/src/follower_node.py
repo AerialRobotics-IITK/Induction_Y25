@@ -6,19 +6,50 @@ iris_2. All follower velocity commands are derived from ArUco pose estimates
 in the gimbal camera frame.
 """
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional
 
-import cv2
-import cv2.aruco as aruco
-import numpy as np
-import rclpy
-from cv_bridge import CvBridge
-from geometry_msgs.msg import Twist
-from rclpy.node import Node
-from sensor_msgs.msg import Image
-from std_msgs.msg import Bool, Float64
+try:
+    import cv2
+    import cv2.aruco as aruco
+    import numpy as np
+except ImportError:
+    cv2 = None
+    aruco = None
+    np = None
+
+try:
+    import rclpy
+    from cv_bridge import CvBridge
+    from geometry_msgs.msg import Twist
+    from rclpy.node import Node
+    from sensor_msgs.msg import Image
+    from std_msgs.msg import Bool, Float64
+except ImportError:
+    rclpy = None
+    CvBridge = None
+    Twist = None
+    Image = object
+    Bool = object
+    Float64 = None
+    Node = object
+
+
+def ensure_runtime_dependencies() -> None:
+    """Raise a clear error if ROS/OpenCV dependencies are unavailable."""
+    missing = []
+    if cv2 is None or aruco is None or np is None:
+        missing.append("opencv-python with aruco and numpy")
+    if rclpy is None or CvBridge is None or Twist is None or Float64 is None:
+        missing.append("ROS 2 Python packages and cv_bridge")
+    if missing:
+        raise RuntimeError(
+            "swarm_tracker runtime dependencies are missing: "
+            + ", ".join(missing)
+        )
 
 
 class TrackerState(Enum):
@@ -115,6 +146,7 @@ class FollowerNode(Node):
     """Detect ArUco markers and command iris_2 from visual relative pose."""
 
     def __init__(self) -> None:
+        ensure_runtime_dependencies()
         super().__init__("follower_node")
 
         self.declare_parameter("image_topic", "/camera/image_raw")
@@ -567,6 +599,7 @@ class FollowerNode(Node):
 
 
 def main(args=None) -> None:
+    ensure_runtime_dependencies()
     rclpy.init(args=args)
     node = FollowerNode()
     try:

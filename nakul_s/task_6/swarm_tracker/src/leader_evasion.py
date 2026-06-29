@@ -4,15 +4,29 @@
 import math
 import time
 
-import rclpy
-from geometry_msgs.msg import Twist
-from rclpy.node import Node
+try:
+    import rclpy
+    from geometry_msgs.msg import Twist
+    from rclpy.node import Node
+except ImportError:
+    rclpy = None
+    Twist = None
+    Node = object
+
+
+def ensure_runtime_dependencies() -> None:
+    """Raise a clear error if ROS 2 dependencies are unavailable."""
+    if rclpy is None or Twist is None:
+        raise RuntimeError(
+            "leader_evasion requires ROS 2 Python packages at runtime."
+        )
 
 
 class LeaderEvasionNode(Node):
     """Publish a figure-eight velocity pattern for iris_1."""
 
     def __init__(self) -> None:
+        ensure_runtime_dependencies()
         super().__init__("leader_evasion_node")
         self.vel_pub = self.create_publisher(
             Twist,
@@ -34,6 +48,7 @@ class LeaderEvasionNode(Node):
 
 
 def main(args=None) -> None:
+    ensure_runtime_dependencies()
     rclpy.init(args=args)
     node = LeaderEvasionNode()
     try:
