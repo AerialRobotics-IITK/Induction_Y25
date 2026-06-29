@@ -1,3 +1,5 @@
+"""Setup configuration for the swarm_tracker ROS 2 package."""
+
 from glob import glob
 import os
 
@@ -22,7 +24,6 @@ setup(
     maintainer_email="nakul@example.com",
     description="Vision-based swarm tracking using ArUco markers.",
     license="MIT",
-    tests_require=["pytest"],
     entry_points={
         "console_scripts": [
             "follower_node = swarm_tracker.follower_node:main",
