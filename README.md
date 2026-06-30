@@ -12,4 +12,4 @@ Example: `vivek_m` , `soumya_j`
 | [Task 3: SmartBank Enterprise System](tasks/task3_smartbank.md)| Build a modular banking system using OOPs in C++              | 19th May EOD   |
 | [Task 4: Dockerize OOPs Assignment](tasks/task4_docker.md)     | Containerize your SmartBank system using Docker               | 25th May EOD   |
 | [Task 5: Virtual Drone Fleet Manager](tasks/task5_drone_fleet.md)| OOPs + ROS 2 + Docker drone fleet simulation                | 5th June EOD   |
-| [Task 6: Vision-Based Swarm Navigation](tasks/task_6/README.md)| ArduPilot + MAVROS + Gazebo vision-based drone tracking       | 24th June EOD  |
+| [Task 6: Vision-Based Swarm Navigation](tasks/task_6/README.md)| ArduPilot + MAVROS + Gazebo vision-based drone tracking       | 25th June EOD  |
