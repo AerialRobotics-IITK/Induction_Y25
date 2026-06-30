@@ -225,8 +225,11 @@ class FollowerNode(Node):
                     if landing_idx is not None:
 
                         landing_pad_distance = tvecs[landing_idx][0][2]
+
+                        once = True
                         
-                        if landing_pad_distance < 5.0:
+                        if (landing_pad_distance < 5.0 and once):
+                            once = False
                             self.get_logger().info("Landing Pad in range! Switching to PRECISION_LANDING.")
                             self.state = "PRECISION_LANDING"
                             self.linear_pid.reset()

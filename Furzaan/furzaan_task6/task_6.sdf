@@ -26,6 +26,7 @@
     <plugin filename="gz-sim-navsat-system"
       name="gz::sim::systems::NavSat">
     </plugin>
+    
 
     <scene>
       <ambient>1.0 1.0 1.0</ambient>
