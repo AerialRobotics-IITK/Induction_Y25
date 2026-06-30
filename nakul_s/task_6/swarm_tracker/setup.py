@@ -1,16 +1,11 @@
 """Setup configuration for the swarm_tracker ROS 2 package."""
-
 from glob import glob
 import os
-
 from setuptools import setup
-
-
 package_name = "swarm_tracker"
-
 setup(
     name=package_name,
-    version="0.1.0",
+    version="1.0.0",
     packages=[package_name],
     package_dir={package_name: "src"},
     data_files=[
@@ -21,8 +16,8 @@ setup(
     install_requires=["setuptools"],
     zip_safe=True,
     maintainer="Nakul Sharma",
-    maintainer_email="nakul@example.com",
-    description="Vision-based swarm tracking using ArUco markers.",
+    maintainer_email="nakulavailable@gmail.com",
+    description="Vision-based leader-follower drone swarm navigation using ArUco markers, MAVROS, and Gazebo.",
     license="MIT",
     entry_points={
         "console_scripts": [

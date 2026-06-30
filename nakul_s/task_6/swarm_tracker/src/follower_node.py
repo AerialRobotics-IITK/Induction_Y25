@@ -59,6 +59,7 @@ class TrackerState(Enum):
     SEARCH = "search"
     LANDING = "landing"
     LANDED = "landed"
+    FAILED = "failed"
 
 
 @dataclass
@@ -149,22 +150,26 @@ class FollowerNode(Node):
         ensure_runtime_dependencies()
         super().__init__("follower_node")
 
-        self.declare_parameter("image_topic", "/camera/image_raw")
+        # --- Topics ---------------------------------------------------
+        self.declare_parameter("image_topic", "/iris_2/gimbal_camera")
         self.declare_parameter(
             "cmd_vel_topic",
             "/iris_2/mavros/setpoint_velocity/cmd_vel_unstamped",
         )
         self.declare_parameter("landing_trigger_topic", "/swarm_tracker/start_landing")
+        self.declare_parameter("mission_fail_topic", "/swarm_tracker/mission_failed")
         self.declare_parameter(
             "mount_control_topic",
             "/iris_2/mavros/mount_control/command",
         )
-        self.declare_parameter("gimbal_yaw_joint_topic", "")
-        self.declare_parameter("gimbal_pitch_joint_topic", "")
+        self.declare_parameter("gimbal_roll_topic", "/gimbal/cmd_roll")
+        self.declare_parameter("gimbal_pitch_topic", "/gimbal/cmd_pitch")
+        self.declare_parameter("gimbal_yaw_topic", "/gimbal/cmd_yaw")
         self.declare_parameter("show_window", True)
 
+        # --- Markers ----------------------------------------------------
         self.declare_parameter("leader_marker_id", 0)
-        self.declare_parameter("landing_marker_id", 0)
+        self.declare_parameter("landing_marker_id", 1)
         self.declare_parameter("leader_marker_size_m", 0.30)
         self.declare_parameter("landing_marker_size_m", 1.00)
         self.declare_parameter("target_distance_m", 2.0)
@@ -231,6 +236,9 @@ class FollowerNode(Node):
             10,
         )
         self.vel_pub = self.create_publisher(Twist, self.cmd_vel_topic, 10)
+        self.fail_pub = self.create_publisher(
+            Bool, str(self.get_parameter("mission_fail_topic").value), 10
+        )
 
         self.mount_pub = None
         self.MountControl = None
@@ -248,22 +256,20 @@ class FollowerNode(Node):
                 f"MAVROS MountControl unavailable ({exc}); using joint topics only."
             )
 
-        yaw_joint_topic = str(self.get_parameter("gimbal_yaw_joint_topic").value)
-        pitch_joint_topic = str(self.get_parameter("gimbal_pitch_joint_topic").value)
-        self.yaw_joint_pub = (
-            self.create_publisher(Float64, yaw_joint_topic, 10)
-            if yaw_joint_topic
-            else None
+        # Direct gimbal command topics (matches iris_with_gimbal/model.sdf).
+        self.gimbal_roll_pub = self.create_publisher(
+            Float64, str(self.get_parameter("gimbal_roll_topic").value), 10
         )
-        self.pitch_joint_pub = (
-            self.create_publisher(Float64, pitch_joint_topic, 10)
-            if pitch_joint_topic
-            else None
+        self.gimbal_pitch_pub = self.create_publisher(
+            Float64, str(self.get_parameter("gimbal_pitch_topic").value), 10
+        )
+        self.gimbal_yaw_pub = self.create_publisher(
+            Float64, str(self.get_parameter("gimbal_yaw_topic").value), 10
         )
 
-        self.distance_pid = PID(0.85, 0.04, 0.22, integral_limit=1.0, output_limit=2.0)
-        self.yaw_pid = PID(1.10, 0.00, 0.12, output_limit=1.2)
-        self.altitude_pid = PID(0.65, 0.02, 0.12, integral_limit=0.8, output_limit=0.9)
+        self.distance_pid = PID(1.20, 0.05, 0.30, integral_limit=1.0, output_limit=2.0)
+        self.yaw_pid = PID(1.40, 0.00, 0.25, output_limit=1.2)
+        self.altitude_pid = PID(0.90, 0.02, 0.18, integral_limit=0.8, output_limit=0.9)
         self.gimbal_yaw_pid = PID(0.80, 0.00, 0.04, output_limit=18.0)
         self.gimbal_pitch_pid = PID(0.80, 0.00, 0.04, output_limit=18.0)
         self.pad_x_pid = PID(0.70, 0.02, 0.10, integral_limit=0.5, output_limit=0.8)
@@ -426,12 +432,15 @@ class FollowerNode(Node):
             self.search_for_leader(cmd)
         elif self.state == TrackerState.LANDING:
             self.land_on_pad(cmd, now_s)
+        elif self.state == TrackerState.FAILED:
+            # Mission failed: hold position, no further motion commands.
+            pass
 
         self.vel_pub.publish(cmd)
         self.publish_gimbal()
 
     def update_state(self, now_ns: int) -> None:
-        if self.state in (TrackerState.LANDING, TrackerState.LANDED):
+        if self.state in (TrackerState.LANDING, TrackerState.LANDED, TrackerState.FAILED):
             return
 
         leader_stamp = self.last_seen_ns.get("leader")
@@ -442,12 +451,15 @@ class FollowerNode(Node):
         lost_s = (now_ns - leader_stamp) / 1e9
 
         if lost_s > self.lost_fail_after_s:
-            self.enter_state(TrackerState.SEARCH)
             if not self.mission_failure_reported:
-                self.get_logger().warning(
-                    f"Leader marker lost for {lost_s:.1f}s; mission threshold exceeded."
+                self.get_logger().error(
+                    f"Leader marker lost for {lost_s:.1f}s; mission failed."
                 )
+                fail_msg = Bool()
+                fail_msg.data = True
+                self.fail_pub.publish(fail_msg)
                 self.mission_failure_reported = True
+            self.enter_state(TrackerState.FAILED)
         elif lost_s > self.lost_search_after_s:
             self.enter_state(TrackerState.SEARCH)
         elif self.last_leader is not None:
@@ -476,13 +488,16 @@ class FollowerNode(Node):
 
         distance_error = target.z - self.target_distance_m
         cmd.linear.x = self.distance_pid.step(distance_error, now_s)
+        cmd.linear.y = -0.8 * target.x
         cmd.angular.z = -self.yaw_pid.step(target.x, now_s)
         cmd.linear.z = -self.altitude_pid.step(target.y, now_s)
         self.track_gimbal(target, now_s)
 
     def search_for_leader(self, cmd: Twist) -> None:
+        # Spiral search instead of pure spin-in-place.
         last_x = self.last_leader.x if self.last_leader is not None else 0.0
-        cmd.angular.z = -0.35 if last_x < 0.0 else 0.35
+        cmd.angular.z = -0.30 if last_x < 0.0 else 0.30
+        cmd.linear.x = 0.15
 
     def land_on_pad(self, cmd: Twist, now_s: float) -> None:
         target = self.last_pad
@@ -496,8 +511,7 @@ class FollowerNode(Node):
             self.enter_state(TrackerState.LANDED)
             return
 
-        descent_rate = min(0.6, max(0.18, 0.20 + 0.12 * target.z))
-        cmd.linear.z = -descent_rate
+        cmd.linear.z = max(-0.5, -0.25 * target.z)
         self.track_gimbal(target, now_s)
 
     def track_gimbal(self, target: MarkerPose, now_s: float) -> None:
@@ -519,12 +533,17 @@ class FollowerNode(Node):
             msg.yaw = float(self.gimbal_yaw_deg)
             self.mount_pub.publish(msg)
 
-        if self.yaw_joint_pub is not None:
-            self.yaw_joint_pub.publish(Float64(data=np.radians(self.gimbal_yaw_deg)))
-        if self.pitch_joint_pub is not None:
-            self.pitch_joint_pub.publish(
-                Float64(data=np.radians(self.gimbal_pitch_deg))
-            )
+        # Direct gimbal command topics matching /gimbal/cmd_roll|pitch|yaw.
+        roll_msg = Float64()
+        roll_msg.data = 0.0
+        pitch_msg = Float64()
+        pitch_msg.data = float(np.radians(self.gimbal_pitch_deg))
+        yaw_msg = Float64()
+        yaw_msg.data = float(np.radians(self.gimbal_yaw_deg))
+
+        self.gimbal_roll_pub.publish(roll_msg)
+        self.gimbal_pitch_pub.publish(pitch_msg)
+        self.gimbal_yaw_pub.publish(yaw_msg)
 
     def draw_overlay(
         self,
@@ -583,7 +602,7 @@ class FollowerNode(Node):
         )
 
         leader_stamp = self.last_seen_ns.get("leader")
-        if self.state != TrackerState.LANDING and leader_stamp is not None:
+        if self.state not in (TrackerState.LANDING, TrackerState.FAILED) and leader_stamp is not None:
             lost_s = (now_ns - leader_stamp) / 1e9
             if lost_s > self.lost_search_after_s:
                 color = (0, 0, 255) if lost_s > self.lost_fail_after_s else (0, 165, 255)
@@ -596,6 +615,17 @@ class FollowerNode(Node):
                     color,
                     2,
                 )
+
+        if self.state == TrackerState.FAILED:
+            cv2.putText(
+                frame,
+                "MISSION FAILED",
+                (10, height - 12),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.6,
+                (0, 0, 255),
+                2,
+            )
 
 
 def main(args=None) -> None:
