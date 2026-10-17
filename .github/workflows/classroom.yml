@@ -1,0 +1,539 @@
+name: Autograding Tests
+on:
+  - push
+  - workflow_dispatch
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-24.04
+    if: github.actor != 'github-classroom[bot]'
+    env:
+      DEBIAN_FRONTEND: noninteractive
+
+    steps:
+      # ════════════════════════════════════════════════════════════
+      # SETUP — Install all tools needed before any grading begins
+      # ════════════════════════════════════════════════════════════
+
+      - name: Checkout student code
+        uses: actions/checkout@v4
+
+      - name: Setup — Install C++ build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            cmake \
+            g++ \
+            build-essential \
+            python3-pip \
+            2>&1 | tail -5
+          echo "C++ tools installed: $(g++ --version | head -1)"
+
+      - name: Setup — Install ROS 2 Jazzy
+        run: |
+          sudo apt-get install -y -qq curl gnupg
+          sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+            -o /usr/share/keyrings/ros-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) \
+            signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+            http://packages.ros.org/ros2/ubuntu noble main" \
+            | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq \
+            ros-jazzy-ros-base \
+            python3-colcon-common-extensions \
+            2>&1 | tail -5
+          echo "ROS 2 Jazzy installed: $(source /opt/ros/jazzy/setup.bash && ros2 --version)"
+
+      # ════════════════════════════════════════════════════════════
+      # PART 1 — C++ OOPs Tests (35 points total)
+      # ════════════════════════════════════════════════════════════
+
+      - name: "[P1-1] C++ File Structure (5 pts)"
+        id: p1-file-structure
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-1 C++ File Structure"
+          command: >
+            bash -c '
+            PASS=true;
+            for f in part1/CMakeLists.txt part1/include/vehicle.hpp part1/include/drone.hpp part1/include/mission_drone.hpp part1/include/autonomous_drone.hpp part1/include/drone_exceptions.hpp part1/src/vehicle.cpp part1/src/drone.cpp part1/src/mission_drone.cpp part1/src/autonomous_drone.cpp part1/src/main.cpp; do
+              if [ -f "$f" ]; then echo "FOUND: $f";
+              else echo "MISSING: $f"; PASS=false; fi;
+            done;
+            $PASS && echo "STRUCTURE_OK" || echo "STRUCTURE_FAIL"'
+          input: ""
+          expected-output: "STRUCTURE_OK"
+          comparison-method: contains
+          timeout: 15
+          max-score: 5
+
+      - name: "[P1-2] C++ Compilation Clean — No Warnings (10 pts)"
+        id: p1-build
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-2 C++ Build"
+          command: >
+            bash -c '
+            cd part1 || { echo "NO_PART1_DIR"; exit 0; };
+            mkdir -p build && cd build;
+            CMAKE_OUT=$(cmake .. -DCMAKE_CXX_FLAGS="-Wall -Wextra" 2>&1);
+            MAKE_OUT=$(make 2>&1);
+            STATUS=$?;
+            echo "$CMAKE_OUT";
+            echo "$MAKE_OUT";
+            if [ $STATUS -eq 0 ]; then
+              echo "BUILD_SUCCESS";
+            else
+              echo "BUILD_FAILED";
+            fi'
+          input: ""
+          expected-output: "BUILD_SUCCESS"
+          comparison-method: contains
+          timeout: 120
+          max-score: 10
+
+      - name: "[P1-3] Polymorphism — Vector of Vehicle* Calls get_info() (5 pts)"
+        id: p1-polymorphism
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-3 Polymorphism"
+          command: >
+            bash -c '
+            BINARY=$(find part1/build -maxdepth 2 -type f -executable -not -name "*.so" 2>/dev/null | head -1);
+            [ -z "$BINARY" ] && { echo "NO_BINARY_FOUND"; exit 0; };
+            timeout 10 "$BINARY" 2>&1 || true'
+          input: ""
+          expected-output: "AutonomousDrone"
+          comparison-method: contains
+          timeout: 15
+          max-score: 5
+
+      - name: "[P1-4] Exception Hierarchy — Custom Errors Caught (5 pts)"
+        id: p1-exceptions
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-4 Custom Exceptions"
+          command: >
+            bash -c '
+            BINARY=$(find part1/build -maxdepth 2 -type f -executable -not -name "*.so" 2>/dev/null | head -1);
+            [ -z "$BINARY" ] && { echo "NO_BINARY_FOUND"; exit 0; };
+            OUTPUT=$(timeout 10 "$BINARY" 2>&1 || true);
+            echo "$OUTPUT";
+            if echo "$OUTPUT" | grep -qi "error\|exception\|caught\|battery\|altitude"; then
+              echo "EXCEPTION_HANDLING_FOUND";
+            fi'
+          input: ""
+          expected-output: "EXCEPTION_HANDLING_FOUND"
+          comparison-method: contains
+          timeout: 15
+          max-score: 5
+
+      - name: "[P1-5] Encapsulation — Private Members in Headers (5 pts)"
+        id: p1-encapsulation
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-5 Encapsulation"
+          command: >
+            bash -c '
+            VEHICLE="part1/include/vehicle.hpp";
+            DRONE="part1/include/drone.hpp";
+            [ ! -f "$VEHICLE" ] && { echo "MISSING vehicle.hpp"; exit 0; };
+            V_PRIVATE=$(grep -c "private:" "$VEHICLE" 2>/dev/null || echo 0);
+            D_PRIVATE=$(grep -c "private:" "$DRONE" 2>/dev/null || echo 0);
+            BATTERY_PRIVATE=$(awk "/private:/,/public:|protected:|^}/" "$VEHICLE" 2>/dev/null | grep -c "battery_level" || echo 0);
+            STATUS_PRIVATE=$(awk "/private:/,/public:|protected:|^}/" "$VEHICLE" 2>/dev/null | grep -c "status" || echo 0);
+            echo "vehicle_private:$V_PRIVATE drone_private:$D_PRIVATE battery_private:$BATTERY_PRIVATE status_private:$STATUS_PRIVATE";
+            if [ "$V_PRIVATE" -gt 0 ] && [ "$D_PRIVATE" -gt 0 ] && [ "$BATTERY_PRIVATE" -gt 0 ]; then
+              echo "ENCAPSULATION_OK";
+            else
+              echo "ENCAPSULATION_INCOMPLETE";
+            fi'
+          input: ""
+          expected-output: "ENCAPSULATION_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P1-6] AutonomousDrone Full Mission Output (5 pts)"
+        id: p1-mission
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P1-6 AutonomousDrone Mission"
+          command: >
+            bash -c '
+            BINARY=$(find part1/build -maxdepth 2 -type f -executable -not -name "*.so" 2>/dev/null | head -1);
+            [ -z "$BINARY" ] && { echo "NO_BINARY_FOUND"; exit 0; };
+            OUTPUT=$(timeout 10 "$BINARY" 2>&1 || true);
+            echo "$OUTPUT";
+            if echo "$OUTPUT" | grep -qi "mission\|waypoint\|summary"; then
+              echo "MISSION_OUTPUT_FOUND";
+            fi'
+          input: ""
+          expected-output: "MISSION_OUTPUT_FOUND"
+          comparison-method: contains
+          timeout: 15
+          max-score: 5
+
+      # ════════════════════════════════════════════════════════════
+      # PART 2 — ROS 2 Tests (45 points total)
+      # ════════════════════════════════════════════════════════════
+
+      - name: "[P2-1] ROS 2 Package File Structure (5 pts)"
+        id: p2-ros-structure
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-1 ROS 2 Package Structure"
+          command: >
+            bash -c '
+            PASS=true;
+            for f in fleet_ws/src/drone_fleet/package.xml fleet_ws/src/drone_fleet/CMakeLists.txt fleet_ws/src/drone_fleet/src/drone_node.cpp fleet_ws/src/drone_fleet/src/fleet_manager.cpp fleet_ws/src/drone_fleet/src/health_monitor.cpp fleet_ws/src/drone_fleet/launch/fleet.launch.py; do
+              if [ -f "$f" ]; then echo "OK: $f";
+              else echo "MISSING: $f"; PASS=false; fi;
+            done;
+            $PASS && echo "ROS2_STRUCTURE_OK" || echo "ROS2_STRUCTURE_FAIL"'
+          input: ""
+          expected-output: "ROS2_STRUCTURE_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P2-2] package.xml Has All Required Dependencies (5 pts)"
+        id: p2-package-xml
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-2 package.xml Dependencies"
+          command: >
+            bash -c '
+            PKG="fleet_ws/src/drone_fleet/package.xml";
+            [ ! -f "$PKG" ] && { echo "MISSING_PACKAGE_XML"; exit 0; };
+            HAS_RCLCPP=$(grep -c "rclcpp" "$PKG" || echo 0);
+            HAS_STD_MSGS=$(grep -c "std_msgs" "$PKG" || echo 0);
+            HAS_STD_SRVS=$(grep -c "std_srvs" "$PKG" || echo 0);
+            HAS_NAME=$(grep -c "<name>drone_fleet</name>" "$PKG" || echo 0);
+            HAS_AMENT=$(grep -c "ament_cmake" "$PKG" || echo 0);
+            echo "rclcpp=$HAS_RCLCPP std_msgs=$HAS_STD_MSGS std_srvs=$HAS_STD_SRVS name=$HAS_NAME ament=$HAS_AMENT";
+            if [ "$HAS_RCLCPP" -gt 0 ] && [ "$HAS_STD_MSGS" -gt 0 ] && [ "$HAS_STD_SRVS" -gt 0 ] && [ "$HAS_NAME" -gt 0 ]; then
+              echo "PACKAGE_XML_OK";
+            fi'
+          input: ""
+          expected-output: "PACKAGE_XML_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P2-3] ROS 2 colcon Build Succeeds (15 pts)"
+        id: p2-ros-build
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-3 ROS 2 colcon Build"
+          command: >
+            bash -c '
+            source /opt/ros/jazzy/setup.bash 2>/dev/null;
+            [ ! -d "fleet_ws" ] && { echo "NO_FLEET_WS_DIR"; exit 0; };
+            cd fleet_ws;
+            BUILD_OUTPUT=$(colcon build --packages-select drone_fleet 2>&1);
+            STATUS=$?;
+            echo "$BUILD_OUTPUT" | tail -20;
+            if [ $STATUS -eq 0 ]; then
+              echo "ROS2_BUILD_SUCCESS";
+            else
+              echo "ROS2_BUILD_FAILED";
+            fi'
+          input: ""
+          expected-output: "ROS2_BUILD_SUCCESS"
+          comparison-method: contains
+          timeout: 300
+          max-score: 15
+
+      - name: "[P2-4] Drone Node — Parameters and Topics Implemented (5 pts)"
+        id: p2-drone-node
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-4 Drone Node Implementation"
+          command: >
+            bash -c '
+            SRC="fleet_ws/src/drone_fleet/src/drone_node.cpp";
+            [ ! -f "$SRC" ] && { echo "MISSING_FILE"; exit 0; };
+            HAS_DRONE_NAME=$(grep -c "drone_name" "$SRC" || echo 0);
+            HAS_INIT_BATTERY=$(grep -c "initial_battery" "$SRC" || echo 0);
+            HAS_MISSION_NAME=$(grep -c "mission_name" "$SRC" || echo 0);
+            HAS_DECLARE_PARAM=$(grep -c "declare_parameter" "$SRC" || echo 0);
+            HAS_STATUS_PUB=$(grep -c "status" "$SRC" || echo 0);
+            HAS_ALERT_PUB=$(grep -c "alert" "$SRC" || echo 0);
+            HAS_TELEMETRY=$(grep -c "telemetry" "$SRC" || echo 0);
+            HAS_MISSION_COMPLETE=$(grep -c "mission_complete" "$SRC" || echo 0);
+            HAS_TIMER=$(grep -c "create_timer\|create_wall_timer" "$SRC" || echo 0);
+            echo "drone_name=$HAS_DRONE_NAME initial_battery=$HAS_INIT_BATTERY mission_name=$HAS_MISSION_NAME";
+            echo "declare_param=$HAS_DECLARE_PARAM alert=$HAS_ALERT_PUB telemetry=$HAS_TELEMETRY timer=$HAS_TIMER";
+            if [ "$HAS_DRONE_NAME" -gt 0 ] && [ "$HAS_INIT_BATTERY" -gt 0 ] && \
+               [ "$HAS_DECLARE_PARAM" -gt 0 ] && [ "$HAS_ALERT_PUB" -gt 0 ] && \
+               [ "$HAS_TELEMETRY" -gt 0 ] && [ "$HAS_TIMER" -gt 0 ]; then
+              echo "DRONE_NODE_OK";
+            fi'
+          input: ""
+          expected-output: "DRONE_NODE_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P2-5] Fleet Manager — Service and Table Report (5 pts)"
+        id: p2-fleet-manager
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-5 Fleet Manager"
+          command: >
+            bash -c '
+            SRC="fleet_ws/src/drone_fleet/src/fleet_manager.cpp";
+            [ ! -f "$SRC" ] && { echo "MISSING_FILE"; exit 0; };
+            HAS_TRIGGER=$(grep -c "Trigger" "$SRC" || echo 0);
+            HAS_SERVICE=$(grep -c "create_service" "$SRC" || echo 0);
+            HAS_SUBSCRIPTION=$(grep -c "create_subscription" "$SRC" || echo 0);
+            HAS_STATUS_ROUTE=$(grep -c "status_report\|fleet/status" "$SRC" || echo 0);
+            HAS_ALPHA=$(grep -ci "alpha" "$SRC" || echo 0);
+            HAS_BETA=$(grep -ci "beta" "$SRC" || echo 0);
+            HAS_GAMMA=$(grep -ci "gamma" "$SRC" || echo 0);
+            HAS_TIMER=$(grep -c "create_timer\|create_wall_timer" "$SRC" || echo 0);
+            echo "trigger=$HAS_TRIGGER service=$HAS_SERVICE sub=$HAS_SUBSCRIPTION route=$HAS_STATUS_ROUTE";
+            echo "alpha=$HAS_ALPHA beta=$HAS_BETA gamma=$HAS_GAMMA timer=$HAS_TIMER";
+            if [ "$HAS_TRIGGER" -gt 0 ] && [ "$HAS_SERVICE" -gt 0 ] && \
+               [ "$HAS_SUBSCRIPTION" -gt 0 ] && [ "$HAS_TIMER" -gt 0 ]; then
+              echo "FLEET_MANAGER_OK";
+            fi'
+          input: ""
+          expected-output: "FLEET_MANAGER_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P2-6] Health Monitor — Deque Circular Buffer and Drain Rate (5 pts)"
+        id: p2-health-monitor
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-6 Health Monitor"
+          command: >
+            bash -c '
+            SRC="fleet_ws/src/drone_fleet/src/health_monitor.cpp";
+            [ ! -f "$SRC" ] && { echo "MISSING_FILE"; exit 0; };
+            HAS_DEQUE=$(grep -c "deque" "$SRC" || echo 0);
+            HAS_HEALTH_WARNING=$(grep -c "health_warning" "$SRC" || echo 0);
+            HAS_DRAIN_RATE=$(grep -c "drain_rate\|drain" "$SRC" || echo 0);
+            HAS_HEALTH_SUMMARY=$(grep -c "health_summary" "$SRC" || echo 0);
+            HAS_CIRCULAR=$(grep -c "push_back\|pop_front" "$SRC" || echo 0);
+            HAS_THRESHOLD=$(grep -c "1\.5\|threshold" "$SRC" || echo 0);
+            echo "deque=$HAS_DEQUE warning=$HAS_HEALTH_WARNING drain=$HAS_DRAIN_RATE summary=$HAS_HEALTH_SUMMARY circular=$HAS_CIRCULAR threshold=$HAS_THRESHOLD";
+            if [ "$HAS_DEQUE" -gt 0 ] && [ "$HAS_HEALTH_WARNING" -gt 0 ] && \
+               [ "$HAS_DRAIN_RATE" -gt 0 ] && [ "$HAS_CIRCULAR" -gt 0 ]; then
+              echo "HEALTH_MONITOR_OK";
+            fi'
+          input: ""
+          expected-output: "HEALTH_MONITOR_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P2-7] Launch File — All 5 Nodes with Correct Batteries (5 pts)"
+        id: p2-launch-file
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P2-7 Launch File"
+          command: >
+            bash -c '
+            LAUNCH="fleet_ws/src/drone_fleet/launch/fleet.launch.py";
+            [ ! -f "$LAUNCH" ] && { echo "MISSING_LAUNCH"; exit 0; };
+            HAS_ALPHA=$(grep -ci "alpha" "$LAUNCH" || echo 0);
+            HAS_BETA=$(grep -ci "beta" "$LAUNCH" || echo 0);
+            HAS_GAMMA=$(grep -ci "gamma" "$LAUNCH" || echo 0);
+            HAS_FM=$(grep -c "fleet_manager" "$LAUNCH" || echo 0);
+            HAS_HM=$(grep -c "health_monitor" "$LAUNCH" || echo 0);
+            HAS_100=$(grep -c "100" "$LAUNCH" || echo 0);
+            HAS_60=$(grep -c "60" "$LAUNCH" || echo 0);
+            HAS_35=$(grep -c "35" "$LAUNCH" || echo 0);
+            echo "alpha=$HAS_ALPHA beta=$HAS_BETA gamma=$HAS_GAMMA fleet_mgr=$HAS_FM health_mon=$HAS_HM";
+            echo "battery100=$HAS_100 battery60=$HAS_60 battery35=$HAS_35";
+            if [ "$HAS_ALPHA" -gt 0 ] && [ "$HAS_BETA" -gt 0 ] && [ "$HAS_GAMMA" -gt 0 ] && \
+               [ "$HAS_FM" -gt 0 ] && [ "$HAS_HM" -gt 0 ] && [ "$HAS_35" -gt 0 ]; then
+              echo "LAUNCH_OK";
+            fi'
+          input: ""
+          expected-output: "LAUNCH_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      # ════════════════════════════════════════════════════════════
+      # PART 3 — Docker Tests (20 points total)
+      # ════════════════════════════════════════════════════════════
+
+      - name: "[P3-1] Dockerfile — Multi-Stage Build Present (5 pts)"
+        id: p3-dockerfile-structure
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P3-1 Dockerfile Multi-Stage"
+          command: >
+            bash -c '
+            DF="fleet_ws/Dockerfile";
+            [ ! -f "$DF" ] && { echo "MISSING_DOCKERFILE"; exit 0; };
+            STAGE_COUNT=$(grep -c "^FROM" "$DF" || echo 0);
+            HAS_BUILDER=$(grep -c "AS builder\|as builder" "$DF" || echo 0);
+            HAS_RUNTIME=$(grep -c "AS runtime\|as runtime" "$DF" || echo 0);
+            HAS_COLCON=$(grep -c "colcon build" "$DF" || echo 0);
+            HAS_ENTRYPOINT=$(grep -c "ENTRYPOINT\|entrypoint" "$DF" || echo 0);
+            HAS_COPY_FROM=$(grep -c "COPY --from" "$DF" || echo 0);
+            HAS_ROS_BASE=$(grep -c "ros:jazzy" "$DF" || echo 0);
+            echo "stages=$STAGE_COUNT builder=$HAS_BUILDER runtime=$HAS_RUNTIME colcon=$HAS_COLCON";
+            echo "entrypoint=$HAS_ENTRYPOINT copy_from=$HAS_COPY_FROM ros_jazzy=$HAS_ROS_BASE";
+            if [ "$STAGE_COUNT" -ge 2 ] && [ "$HAS_COLCON" -gt 0 ] && [ "$HAS_COPY_FROM" -gt 0 ]; then
+              echo "DOCKERFILE_MULTISTAGE_OK";
+            fi'
+          input: ""
+          expected-output: "DOCKERFILE_MULTISTAGE_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P3-2] run.sh — Required Docker Flags Present (5 pts)"
+        id: p3-runsh-flags
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P3-2 run.sh Flags"
+          command: >
+            bash -c '
+            RUNSH="fleet_ws/run.sh";
+            [ ! -f "$RUNSH" ] && { echo "MISSING_RUNSH"; exit 0; };
+            HAS_IT=$(grep -c "\-it\b\|\-i \|\-t " "$RUNSH" || echo 0);
+            HAS_RM=$(grep -c "\-\-rm" "$RUNSH" || echo 0);
+            HAS_NET=$(grep -c "net=host\|network=host" "$RUNSH" || echo 0);
+            HAS_ROS_DOMAIN=$(grep -c "ROS_DOMAIN_ID" "$RUNSH" || echo 0);
+            HAS_VOLUME=$(grep -c "\-v \|\-\-volume" "$RUNSH" || echo 0);
+            HAS_LAUNCH=$(grep -c "launch\|fleet" "$RUNSH" || echo 0);
+            IS_EXECUTABLE=$([ -x "$RUNSH" ] && echo 1 || echo 0);
+            echo "it=$HAS_IT rm=$HAS_RM net=$HAS_NET ros_domain=$HAS_ROS_DOMAIN volume=$HAS_VOLUME launch=$HAS_LAUNCH exec=$IS_EXECUTABLE";
+            if [ "$HAS_IT" -gt 0 ] && [ "$HAS_VOLUME" -gt 0 ] && [ "$HAS_ROS_DOMAIN" -gt 0 ]; then
+              echo "RUNSH_OK";
+            fi'
+          input: ""
+          expected-output: "RUNSH_OK"
+          comparison-method: contains
+          timeout: 10
+          max-score: 5
+
+      - name: "[P3-3] Docker Image Builds Successfully (10 pts)"
+        id: p3-docker-build
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "P3-3 Docker Build"
+          command: >
+            bash -c '
+            [ ! -f "fleet_ws/Dockerfile" ] && { echo "MISSING_DOCKERFILE"; exit 0; };
+            cd fleet_ws;
+            BUILD_OUTPUT=$(docker build -t drone_fleet_ci_test:latest . 2>&1);
+            STATUS=$?;
+            echo "$BUILD_OUTPUT" | tail -10;
+            if [ $STATUS -eq 0 ]; then
+              IMAGE_SIZE=$(docker image inspect drone_fleet_ci_test:latest --format "{{.Size}}" 2>/dev/null || echo 0);
+              SIZE_GB=$(echo "scale=2; $IMAGE_SIZE / 1073741824" | bc 2>/dev/null || echo "unknown");
+              echo "Image size: ${SIZE_GB}GB";
+              docker rmi drone_fleet_ci_test:latest --force 2>/dev/null || true;
+              echo "DOCKER_BUILD_SUCCESS";
+            else
+              echo "DOCKER_BUILD_FAILED";
+            fi'
+          input: ""
+          expected-output: "DOCKER_BUILD_SUCCESS"
+          comparison-method: contains
+          timeout: 900
+          max-score: 10
+
+      # ════════════════════════════════════════════════════════════
+      # BONUS — Extra Checks (not scored, informational)
+      # ════════════════════════════════════════════════════════════
+
+      - name: "Bonus — Check chrono timestamps used in C++ logs"
+        id: bonus-chrono
+        continue-on-error: true
+        run: |
+          echo "=== Checking for std::chrono usage in Part 1 ==="
+          SRC_FILES=$(find part1/src part1/include -name "*.cpp" -o -name "*.hpp" 2>/dev/null)
+          if echo "$SRC_FILES" | xargs grep -l "chrono" 2>/dev/null; then
+            echo "CHRONO_FOUND: std::chrono is used in source files"
+          else
+            echo "CHRONO_NOT_FOUND: Warning - timestamps may not be using std::chrono"
+          fi
+
+      - name: "Bonus — Check JSON telemetry format in drone_node"
+        id: bonus-json
+        continue-on-error: true
+        run: |
+          echo "=== Checking for JSON telemetry format ==="
+          SRC="fleet_ws/src/drone_fleet/src/drone_node.cpp"
+          if [ -f "$SRC" ]; then
+            JSON_COUNT=$(grep -c '{"' "$SRC" 2>/dev/null || echo 0)
+            echo "JSON-style strings found: $JSON_COUNT"
+            if [ "$JSON_COUNT" -gt 0 ]; then
+              echo "JSON_TELEMETRY_FOUND"
+            else
+              echo "JSON_TELEMETRY_NOT_FOUND: Warning - telemetry may not be JSON formatted"
+            fi
+          fi
+
+      - name: "Bonus — Gamma hits critical in ~30 seconds check"
+        id: bonus-gamma-critical
+        continue-on-error: true
+        run: |
+          echo "=== Checking Gamma starting battery and drain math ==="
+          LAUNCH="fleet_ws/src/drone_fleet/launch/fleet.launch.py"
+          if [ -f "$LAUNCH" ]; then
+            echo "Gamma config in launch file:"
+            grep -A 5 -i "gamma" "$LAUNCH" || echo "Gamma config not clearly visible"
+            # Gamma starts at 35%, critical threshold is ~20%, so 15% needs to drain
+            # At 0.5/sec drain = 30 seconds. This is the expected math.
+            echo "Expected: Gamma(35% start) -> critical(20%) in ~30 sec at 0.5%/sec drain"
+          fi
+
+      # ════════════════════════════════════════════════════════════
+      # AUTOGRADING REPORTER — Collect all test results
+      # ════════════════════════════════════════════════════════════
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          P1-FILE-STRUCTURE_RESULTS: "${{ steps.p1-file-structure.outputs.result }}"
+          P1-BUILD_RESULTS: "${{ steps.p1-build.outputs.result }}"
+          P1-POLYMORPHISM_RESULTS: "${{ steps.p1-polymorphism.outputs.result }}"
+          P1-EXCEPTIONS_RESULTS: "${{ steps.p1-exceptions.outputs.result }}"
+          P1-ENCAPSULATION_RESULTS: "${{ steps.p1-encapsulation.outputs.result }}"
+          P1-MISSION_RESULTS: "${{ steps.p1-mission.outputs.result }}"
+          P2-ROS-STRUCTURE_RESULTS: "${{ steps.p2-ros-structure.outputs.result }}"
+          P2-PACKAGE-XML_RESULTS: "${{ steps.p2-package-xml.outputs.result }}"
+          P2-ROS-BUILD_RESULTS: "${{ steps.p2-ros-build.outputs.result }}"
+          P2-DRONE-NODE_RESULTS: "${{ steps.p2-drone-node.outputs.result }}"
+          P2-FLEET-MANAGER_RESULTS: "${{ steps.p2-fleet-manager.outputs.result }}"
+          P2-HEALTH-MONITOR_RESULTS: "${{ steps.p2-health-monitor.outputs.result }}"
+          P2-LAUNCH-FILE_RESULTS: "${{ steps.p2-launch-file.outputs.result }}"
+          P3-DOCKERFILE-STRUCTURE_RESULTS: "${{ steps.p3-dockerfile-structure.outputs.result }}"
+          P3-RUNSH-FLAGS_RESULTS: "${{ steps.p3-runsh-flags.outputs.result }}"
+          P3-DOCKER-BUILD_RESULTS: "${{ steps.p3-docker-build.outputs.result }}"
+        with:
+          runners: >-
+            p1-file-structure,
+            p1-build,
+            p1-polymorphism,
+            p1-exceptions,
+            p1-encapsulation,
+            p1-mission,
+            p2-ros-structure,
+            p2-package-xml,
+            p2-ros-build,
+            p2-drone-node,
+            p2-fleet-manager,
+            p2-health-monitor,
+            p2-launch-file,
+            p3-dockerfile-structure,
+            p3-runsh-flags,
+            p3-docker-build
