@@ -1,0 +1,39 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/drone_node.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Vehicle.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/Drone.cpp.o[0m
+[ 66%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/MissionDrone.cpp.o[0m
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kvoid MissionDrone::[01;32m[Kskip_waypoint[m[K(const std::string&)[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:34:24:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kreason[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   34 |     [01;35m[Kconst std::string& reason[m[K)
+      |     [01;35m[K~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:[m[K In member function ‘[01m[Kbool MissionDrone::[01;32m[Kmission_complete[m[K() const[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/MissionDrone.cpp:41:35:[m[K [01;35m[Kwarning: [m[Kcomparison of integer expressions of different signedness: ‘[01m[Kconst int[m[K’ and ‘[01m[Kstd::vector<std::tuple<float, float, float> >::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wsign-compare-Wsign-compare]8;;[m[K]
+   41 |     return [01;35m[Kcurrent_waypoint_index >=[m[K
+      |            [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~^~[m[K
+   42 | [01;35m[K           waypoints.size()[m[K;
+      |            [01;35m[K~~~~~~~~~~~~~~~~[m[K        
+[ 83%] [32mBuilding CXX object CMakeFiles/drone_node.dir/src/AutonomousDrone.cpp.o[0m
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:[m[K In member function ‘[01m[Kvoid AutonomousDrone::[01;32m[Kdetect_obstacle[m[K(std::tuple<float, float, float>, const std::string&)[m[K’:
+[01m[K/home/nakulsharma/ros2_ws/src/drone_fleet/src/AutonomousDrone.cpp:34:35:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kposition[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   34 |     [01;35m[Kstd::tuple<float,float,float> position[m[K,
+      |     [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K
+[100%] [32m[1mLinking CXX executable drone_node[0m
+[100%] Built target drone_node
+-- Install configuration: ""
+-- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/lib/drone_fleet/drone_node
+-- Set non-toolchain portion of runtime path of "/home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/lib/drone_fleet/drone_node" to ""
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/package_run_dependencies/drone_fleet
+-- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/parent_prefix_path/drone_fleet
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/ament_prefix_path.sh
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/path.sh
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/environment/path.dsv
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.bash
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.sh
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.zsh
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/local_setup.dsv
+-- Installing: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/package.dsv
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/ament_index/resource_index/packages/drone_fleet
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/cmake/drone_fleetConfig.cmake
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/cmake/drone_fleetConfig-version.cmake
+-- Up-to-date: /home/nakulsharma/ros2_ws/src/drone_fleet/install/drone_fleet/share/drone_fleet/package.xml

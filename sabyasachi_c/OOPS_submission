@@ -1,0 +1,452 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <exception>
+
+using namespace std;
+
+class Branch;
+class Customer;
+class Account;
+
+class InsufficientBalanceException: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Sorry, you have insufficient balance for this operation";
+        }
+};
+
+class InvalidPinException: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Invalid PIN";
+        }
+};
+
+class AccountBlockedException: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Your account is blocked";
+        }
+};
+
+class LoanRejectedException: public exception{
+    public:
+        const char* what() const noexcept override{
+            return "Your loan was rejected";
+        }
+};
+
+class Notification{
+    public:
+        string message;
+        Notification(const string& msg) : message(msg) {}
+        virtual void send() = 0;
+        virtual ~Notification() {}
+};
+
+class SMSNotification: public Notification{
+    public:
+        string phoneNumber;
+        string deliveryStatus;
+
+        SMSNotification(const string& phone, const string& msg)
+            : Notification(msg), phoneNumber(phone), deliveryStatus("Pending") {}
+
+        void send() override {
+            cout << "[SMS] To: " << phoneNumber << " | " << message << endl;
+            deliveryStatus = "Sent";
+        }
+};
+
+class EmailNotification: public Notification{
+    public:
+        string emailAddress;
+        string subject;
+        string deliveryStatus;
+
+        EmailNotification(const string& email, const string& subj, const string& msg)
+            : Notification(msg), emailAddress(email), subject(subj), deliveryStatus("Pending") {}
+
+        void send() override {
+            cout << "[Email] To: " << emailAddress << " | Subject: " << subject << " | " << message << endl;
+            deliveryStatus = "Sent";
+        }
+};
+
+class Branch{
+    public:
+        int branchId;
+        string branchName;
+        string IFSCCode;
+        string address;
+
+        Branch(int branchId, const string& name, const string& code, const string& address):
+            branchId(branchId), branchName(name), IFSCCode(code), address(address) {}
+
+    private:
+        vector<Account*> accounts;
+        vector<int> employees;
+};
+
+class Customer{
+    public:
+        int customerID;
+        string fullName;
+        string gender;
+        string mobileNumber;
+        string email;
+        string address;
+        string aadhar;
+        string pan;
+        vector<Account*> accounts;
+        vector<int> loans;
+
+        Customer(int id, const string& name, const string& gen,
+                 const string& mobile, const string& mail,
+                 const string& addr, const string& aadharNum, const string& panNum)
+            : customerID(id), fullName(name), gender(gen),
+              mobileNumber(mobile), email(mail), address(addr),
+              aadhar(aadharNum), pan(panNum) {}
+
+        void sendNotification(Notification* notif) {
+            notif->send();
+        }
+};
+
+class Account{
+    protected:
+        long accountNumber;
+        string accountType;
+        double balance;
+        string status;
+        Branch* branch;
+        Customer* customer;
+
+        struct Transaction {
+            int transactionId;
+            string transactionType;
+            double amount;
+            string status;
+        };
+
+        vector<Transaction> transactions;
+        static int transactionCounter;
+
+    public:
+        Account(long accNum, const string& accType, double initialBalance, Branch* br, Customer* cust)
+            : accountNumber(accNum), accountType(accType), balance(initialBalance),
+              status("Active"), branch(br), customer(cust) {}
+
+        virtual void deposit(double amount) {
+            if (status == "Blocked") throw AccountBlockedException();
+            if (amount <= 0) throw invalid_argument("Amount must be positive");
+            balance += amount;
+            Transaction t;
+            t.transactionId = ++transactionCounter;
+            t.transactionType = "Deposit";
+            t.amount = amount;
+            t.status = "Success";
+            transactions.push_back(t);
+            cout << "Deposited " << amount << " to account " << accountNumber << ". Balance: " << balance << endl;
+        }
+
+        virtual void withdraw(double amount) {
+            if (status == "Blocked") throw AccountBlockedException();
+            if (amount <= 0) throw invalid_argument("Amount must be positive");
+            if (amount > balance) throw InsufficientBalanceException();
+            balance -= amount;
+            Transaction t;
+            t.transactionId = ++transactionCounter;
+            t.transactionType = "Withdrawal";
+            t.amount = amount;
+            t.status = "Success";
+            transactions.push_back(t);
+            cout << "Withdrew " << amount << " from account " << accountNumber << ". Balance: " << balance << endl;
+        }
+
+        void transfer(Account* receiver, double amount) {
+            this->withdraw(amount);
+            receiver->deposit(amount);
+        }
+
+        void printTransactionHistory() const {
+            cout << "\n--- Transactions for Account " << accountNumber << " ---" << endl;
+            for (const auto& t : transactions) {
+                cout << "ID: " << t.transactionId
+                     << " | Type: " << t.transactionType
+                     << " | Amount: " << t.amount
+                     << " | Status: " << t.status << endl;
+            }
+        }
+
+        void setStatus(const string& s) { status = s; }
+        string getStatus() const { return status; }
+        long getAccountNumber() const { return accountNumber; }
+        double getBalance() const { return balance; }
+
+        virtual ~Account() {}
+};
+
+int Account::transactionCounter = 0;
+
+class SavingsAccount: public Account {
+    private:
+        double interestRate;
+        double minimumBalance;
+
+    public:
+        SavingsAccount(long accNum, double initialBalance, double intRate, double minBal, Branch* br, Customer* cust)
+            : Account(accNum, "Savings", initialBalance, br, cust),
+              interestRate(intRate), minimumBalance(minBal) {}
+
+        void withdraw(double amount) override {
+            if (status == "Blocked") throw AccountBlockedException();
+            if (amount <= 0) throw invalid_argument("Amount must be positive");
+            if ((balance - amount) < minimumBalance) throw InsufficientBalanceException();
+            balance -= amount;
+            Transaction t;
+            t.transactionId = ++transactionCounter;
+            t.transactionType = "Withdrawal";
+            t.amount = amount;
+            t.status = "Success";
+            transactions.push_back(t);
+            cout << "Withdrew " << amount << " from savings account " << accountNumber << ". Balance: " << balance << endl;
+        }
+};
+
+class CurrentAccount: public Account {
+    private:
+        double overdraftLimit;
+        string businessName;
+
+    public:
+        CurrentAccount(long accNum, double initialBalance, double odLimit, const string& bizName, Branch* br, Customer* cust)
+            : Account(accNum, "Current", initialBalance, br, cust),
+              overdraftLimit(odLimit), businessName(bizName) {}
+
+        void withdraw(double amount) override {
+            if (status == "Blocked") throw AccountBlockedException();
+            if (amount <= 0) throw invalid_argument("Amount must be positive");
+            if ((balance - amount) < -overdraftLimit) throw InsufficientBalanceException();
+            balance -= amount;
+            Transaction t;
+            t.transactionId = ++transactionCounter;
+            t.transactionType = "Withdrawal";
+            t.amount = amount;
+            t.status = "Success";
+            transactions.push_back(t);
+            cout << "Withdrew " << amount << " from current account " << accountNumber << ". Balance: " << balance << endl;
+        }
+};
+
+class FDAccount: public Account {
+    private:
+        double FDAmount;
+        double FDInterestRate;
+        int tenureMonths;
+
+    public:
+        FDAccount(long accNum, double fdAmount, double fdIntRate, int tenure, Branch* br, Customer* cust)
+            : Account(accNum, "Fixed Deposit", fdAmount, br, cust),
+              FDAmount(fdAmount), FDInterestRate(fdIntRate), tenureMonths(tenure) {}
+
+        void withdraw(double amount) override {
+            throw runtime_error("Cannot withdraw from Fixed Deposit before maturity");
+        }
+};
+
+class TransactionClass{
+    private:
+        int transactionID;
+        string transactionType;
+        double amount;
+        Account* senderAccount;
+        Account* receiverAccount;
+        string status;
+};
+
+class Loan{
+    private:
+        int loanID;
+        string loanType;
+        double loanAmount;
+        double interestRate;
+        int tenureYears;
+        double EMIAmount;
+        string loanStatus;
+        Customer* customer;
+
+    public:
+        Loan(int id, const string& type, double amount, double intRate, int tenure, Customer* cust)
+            : loanID(id), loanType(type), loanAmount(amount), interestRate(intRate),
+              tenureYears(tenure), EMIAmount(0), loanStatus("Pending"), customer(cust) {}
+
+        void approveLoan() {
+            loanStatus = "Approved";
+            cout << "Loan " << loanID << " approved." << endl;
+        }
+
+        void rejectLoan() {
+            loanStatus = "Rejected";
+            cout << "Loan " << loanID << " rejected." << endl;
+        }
+};
+
+class ATMCard{
+    private:
+        long cardNumber;
+        int CVV;
+        int PIN;
+        string cardType;
+        string cardStatus;
+        Account* linkedAccount;
+
+    public:
+        ATMCard(long cardNum, int cvv, int pin, const string& type, Account* acc)
+            : cardNumber(cardNum), CVV(cvv), PIN(pin),
+              cardType(type), cardStatus("Active"), linkedAccount(acc) {}
+
+        void validatePIN(int enteredPIN) {
+            if (enteredPIN != PIN) throw InvalidPinException();
+        }
+
+        void blockCard() {
+            cardStatus = "Blocked";
+            cout << "Card " << cardNumber << " blocked." << endl;
+        }
+
+        void withdraw(int enteredPIN, double amount) {
+            if (cardStatus == "Blocked") throw AccountBlockedException();
+            validatePIN(enteredPIN);
+            linkedAccount->withdraw(amount);
+        }
+};
+
+class Employee{
+    private:
+        int employeeID;
+        string employeeName;
+        string designation;
+        double salary;
+        Branch* branch;
+
+    public:
+        Employee(int id, const string& name, const string& desig, double sal, Branch* br)
+            : employeeID(id), employeeName(name), designation(desig), salary(sal), branch(br) {}
+};
+
+class Bank{
+    public:
+        int bankId;
+        string bankName;
+        vector<Branch*> branches;
+        vector<Customer*> customers;
+        vector<Employee*> employees;
+
+        Bank(int id, const string& name) : bankId(id), bankName(name) {}
+
+        ~Bank() {
+            for (auto b : branches) delete b;
+            for (auto c : customers) delete c;
+            for (auto e : employees) delete e;
+        }
+
+        Branch* addBranch(int id, const string& name, const string& ifsc, const string& addr) {
+            Branch* b = new Branch(id, name, ifsc, addr);
+            branches.push_back(b);
+            return b;
+        }
+
+        Customer* addCustomer(int id, const string& name, const string& gender,
+                              const string& mobile, const string& email,
+                              const string& addr, const string& aadhar, const string& pan) {
+            Customer* c = new Customer(id, name, gender, mobile, email, addr, aadhar, pan);
+            customers.push_back(c);
+            return c;
+        }
+
+        SavingsAccount* openSavingsAccount(long accNum, double initialDeposit,
+                                            double intRate, double minBal,
+                                            Branch* branch, Customer* customer) {
+            SavingsAccount* acc = new SavingsAccount(accNum, initialDeposit, intRate, minBal, branch, customer);
+            customer->accounts.push_back(acc);
+            return acc;
+        }
+
+        CurrentAccount* openCurrentAccount(long accNum, double initialDeposit,
+                                            double odLimit, const string& bizName,
+                                            Branch* branch, Customer* customer) {
+            CurrentAccount* acc = new CurrentAccount(accNum, initialDeposit, odLimit, bizName, branch, customer);
+            customer->accounts.push_back(acc);
+            return acc;
+        }
+};
+
+int main()
+{
+    Bank bank(1, "SmartBank");
+
+    Branch* mainBranch = bank.addBranch(1, "Main Branch", "SMRT0001234", "123 MG Road, Bangalore");
+
+    Customer* alice = bank.addCustomer(1, "Alice", "Female", "9876543210",
+                                       "alice@email.com", "Bangalore", "1234-5678", "ABCPF1234D");
+
+    Customer* bob = bank.addCustomer(2, "Bob", "Male", "9123456789",
+                                     "bob@email.com", "Delhi", "9876-5432", "XYZPM9876G");
+
+    SavingsAccount* aliceSavings = bank.openSavingsAccount(1001, 50000, 4.5, 1000, mainBranch, alice);
+    CurrentAccount* bobCurrent = bank.openCurrentAccount(1002, 100000, 50000, "Bob Enterprises", mainBranch, bob);
+
+    cout << "\n--- Transactions ---" << endl;
+    try {
+        aliceSavings->deposit(10000);
+        aliceSavings->withdraw(5000);
+        aliceSavings->transfer(bobCurrent, 2000);
+    } catch (const InsufficientBalanceException& e) {
+        cout << "[Error] " << e.what() << endl;
+    } catch (const AccountBlockedException& e) {
+        cout << "[Error] " << e.what() << endl;
+    }
+
+    cout << "\n--- Block Account Test ---" << endl;
+    aliceSavings->setStatus("Blocked");
+    try {
+        aliceSavings->deposit(1000);
+    } catch (const AccountBlockedException& e) {
+        cout << "[Error] " << e.what() << endl;
+    }
+    aliceSavings->setStatus("Active");
+
+    cout << "\n--- ATM Card Test ---" << endl;
+    ATMCard* aliceCard = new ATMCard(4111111111111111L, 123, 1234, "Debit", aliceSavings);
+    try {
+        aliceCard->withdraw(1234, 1000);
+        aliceCard->withdraw(9999, 1000);
+    } catch (const InvalidPinException& e) {
+        cout << "[Error] " << e.what() << endl;
+    } catch (const InsufficientBalanceException& e) {
+        cout << "[Error] " << e.what() << endl;
+    }
+
+    cout << "\n--- Loan Test ---" << endl;
+    Loan* loan = new Loan(1, "Home", 5000000, 8.5, 20, alice);
+    loan->approveLoan();
+
+    cout << "\n--- Notifications ---" << endl;
+    SMSNotification sms(alice->mobileNumber, "Your account was credited.");
+    EmailNotification email(alice->email, "Statement", "Your April statement is ready.");
+    alice->sendNotification(&sms);
+    alice->sendNotification(&email);
+
+    cout << "\n--- Transaction History ---" << endl;
+    aliceSavings->printTransactionHistory();
+    bobCurrent->printTransactionHistory();
+
+    for (auto acc : alice->accounts) delete acc;
+    for (auto acc : bob->accounts) delete acc;
+    delete aliceCard;
+    delete loan;
+
+    return 0;
+}

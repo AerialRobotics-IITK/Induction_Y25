@@ -1,0 +1,66 @@
+<?xml version='1.0'?>
+<!--
+  landing_pad/model.sdf
+  ─────────────────────
+  A flat 1m×1m pad with an ArUco marker (DICT_4X4_50, ID=1) on its surface.
+  iris_2 uses this for Subtask 3 precision landing.
+  Placed in the world at a fixed position; can be made dynamic later.
+-->
+<sdf version="1.9">
+  <model name="landing_pad">
+    <static>true</static>
+
+    <link name="pad_link">
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.083</ixx><iyy>0.083</iyy><izz>0.167</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
+
+      <!-- Base pad -->
+      <collision name="collision">
+        <geometry>
+          <box><size>1.0 1.0 0.02</size></box>
+        </geometry>
+      </collision>
+      <visual name="pad_visual">
+        <geometry>
+          <box><size>1.0 1.0 0.02</size></box>
+        </geometry>
+        <material>
+          <ambient>0.2 0.2 0.2 1</ambient>
+          <diffuse>0.3 0.3 0.3 1</diffuse>
+        </material>
+      </visual>
+
+      <!-- ArUco marker (ID=1, 30cm×30cm white square on top) -->
+      <visual name="aruco_marker">
+        <pose>0 0 0.011 0 0 0</pose>
+        <geometry>
+          <box><size>0.30 0.30 0.001</size></box>
+        </geometry>
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <emissive>0.95 0.95 0.95 1</emissive>
+        </material>
+      </visual>
+      <!-- Black border so marker is detectable -->
+      <visual name="aruco_border">
+        <pose>0 0 0.0105 0 0 0</pose>
+        <geometry>
+          <box><size>0.36 0.36 0.001</size></box>
+        </geometry>
+        <material>
+          <ambient>0 0 0 1</ambient>
+          <diffuse>0 0 0 1</diffuse>
+          <emissive>0 0 0 1</emissive>
+        </material>
+      </visual>
+
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>swarm_tracker</name>
+  <version>0.0.1</version>
+
+  <description>Vision based swarm tracking package</description>
+
+  <maintainer email="rushil@example.com">Rushil Kumar</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>cv_bridge</depend>
+
+  <exec_depend>python3-opencv</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
